@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nautilus PBM Configurator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: #f8f9fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .main-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .left-panel {
+            width: 400px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-right: 2px solid #e9ecef;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .right-panel {
+            flex: 1;
+            background: white;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .logo-header {
+            padding: 20px;
+            text-align: center;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .nautilus-logo {
+            width: 50px;
+            height: 50px;
+            background: #6B6B6B;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 300;
+            color: #6B6B6B;
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: 16px;
+            color: #2E5A87;
+            font-weight: 700;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .control-section {
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .control-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-header {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .section-header:hover {
+            background: #e9ecef;
+        }
+        
+        .section-header.active {
+            background: #2E5A87;
+            color: white;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-icon {
+            color: #2E5A87;
+            font-size: 18px;
+        }
+        
+        .section-header.active .section-icon {
+            color: white;
+        }
+        
+        .collapse-icon {
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+        
+        .collapse-icon.expanded {
+            transform: rotate(45deg);
+        }
+        
+        .section-content {
+            padding: 20px;
+            display: none;
+            background: white;
+        }
+        
+        .section-content.expanded {
+            display: block;
+        }
+        
+        .upload-area {
+            border: 2px dashed #2E5A87;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area.uploaded {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .upload-area:hover {
+            border-color: #1a4971;
+            background: #e9ecef;
+        }
+        
+        .file-input {
+            margin: 15px 0;
+        }
+        
+        .file-input input[type="file"] {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            background: white;
+        }
+        
+        .template-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .template-option {
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .template-option:hover {
+            border-color: #2E5A87;
+            background: #f8f9fa;
+        }
+        
+        .template-option.selected {
+            border-color: #2E5A87;
+            background: #e8f4f8;
+        }
+        
+        .template-option input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .template-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .template-description {
+            font-size: 13px;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+        
+        .template-stats {
+            font-size: 12px;
+            color: #2E5A87;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .btn {
+            background: #2E5A87;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin: 4px;
+        }
+        
+        .btn:hover {
+            background: #1a4971;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(46, 90, 135, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6B6B6B;
+        }
+        
+        .btn-secondary:hover {
+            background: #555555;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-item:hover {
+            background: #f8f9fa;
+            border-color: #2E5A87;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.1);
+        }
+        
+        .checkbox-item label {
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .weight-section {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            margin-bottom: 15px;
+        }
+        
+        .weight-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .weight-label {
+            width: 140px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #495057;
+            flex-shrink: 0;
+        }
+        
+        .weight-slider {
+            width: 120px;
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+        
+        .weight-input {
+            width: 50px;
+            padding: 4px;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        
+        .weight-display {
+            min-width: 35px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            color: #2E5A87;
+        }
+        
+        .priority-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .priority-green { 
+            background: #28a745;
+        }
+        
+        .priority-yellow { 
+            background: #ffc107;
+        }
+        
+        .priority-red { 
+            background: #dc3545;
+        }
+        
+        .total-weight {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .total-valid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .total-invalid {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .topic-section {
+            margin-bottom: 15px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .topic-header {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
+            font-size: 14px;
+            color: #495057;
+        }
+        
+        .topic-levels {
+            padding: 12px 15px;
+        }
+        
+        .level-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .level-checkbox:last-child {
+            margin-bottom: 0;
+        }
+        
+        .level-checkbox input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .level-checkbox label {
+            font-size: 13px;
+            color: #495057;
+            cursor: pointer;
+        }
+        
+        .contract-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .contract-item:hover {
+            background: #e9ecef;
+            border-color: #2E5A87;
+        }
+        
+        .contract-item.selected {
+            background: #e8f4f8;
+            border-color: #2E5A87;
+        }
+        
+        .contract-checkbox {
+            margin-top: 2px;
+            transform: scale(1.1);
+        }
+        
+        .contract-content {
+            flex: 1;
+        }
+        
+        .contract-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .contract-description {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.3;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+        
+        .summary-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2E5A87;
+            margin-bottom: 5px;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .generate-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .question-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 0;
+        }
+        
+        .question-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .question-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .question-list-container {
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .question-category-header {
+            background: #2E5A87;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .question-item {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .question-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .question-checkbox {
+            margin-top: 3px;
+            transform: scale(1.2);
+        }
+        
+        .question-content {
+            flex: 1;
+        }
+        
+        .question-number {
+            font-weight: 700;
+            color: #2E5A87;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .question-text {
+            color: #495057;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .question-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .level-1 { background: #dc3545; color: white; }
+        .level-2 { background: #ffc107; color: #212529; }
+        .level-3 { background: #28a745; color: white; }
+        
+        .commercial { background: #2E5A87; color: white; }
+        .medicare { background: #e83e8c; color: white; }
+        .both { background: #6B6B6B; color: white; }
+        
+        .template-rfi { background: #17a2b8; color: white; }
+        .template-rfp { background: #6f42c1; color: white; }
+        .template-both { background: #28a745; color: white; }
+        
+        .fiduciary-required { background: #dc3545; color: white; }
+        .rfi-essential { background: #17a2b8; color: white; }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .multiplier-section {
+            background: #e8f4f8;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .multiplier-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .multiplier-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .multiplier-label {
+            font-size: 12px;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .multiplier-input {
+            width: 50px;
+            padding: 2px 4px;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .category-count {
+            color: #6c757d;
+            font-weight: normal;
+        }
+        
+        /* Scrollbar styling */
+        .left-panel::-webkit-scrollbar,
+        .question-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .left-panel::-webkit-scrollbar-track,
+        .question-list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .left-panel::-webkit-scrollbar-thumb,
+        .question-list-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .left-panel::-webkit-scrollbar-thumb:hover,
+        .question-list-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Control Panel -->
+        <div class="left-panel">
+            <!-- Logo Header -->
+            <div class="logo-header">
+                <div class="logo-container">
+                    <div class="nautilus-logo">N</div>
+                    <div class="logo-text">Nautilus</div>
+                </div>
+                <div class="tagline">PBM RFI/RFP Configurator</div>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="control-section">
+                <div class="section-header" onclick="toggleSection('upload')">
+                    <div class="section-title">
+                        <span class="section-icon">📁</span>
+                        Question Database
+                    </div>
+                    <span class="collapse-icon">+</span>
+                </div>
+                <div class="section-content" id="upload-content">
+                    <div class="upload-area" id="uploadArea">
+                        <div id="uploadPrompt">
+                            <div style="font-size: 14px; margin-bottom: 10px;">Upload CSV File</div>
+                            <div class="file-input">
+                                <input type="file" id="csvFile" accept=".csv" />
+                            </div>
+                        </div>
+                        <div id="uploadSuccess" class="hidden">
+                            <div style="color: #28a745; font-weight: 600; margin-bottom: 5px;">✅ Upload Complete</div>
+                            <div id="uploadDetails" style="font-size: 13px; color: #6c757d;"></div>
+                            <button class="btn btn-secondary btn-sm" onclick="resetUpload()" style="margin-top: 10px;">Change File</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Selection -->
+            <div class="control-section" id="templateSection" style="display: none;">
+                <div class="section-header active" onclick="toggleSection('template')">
+                    <div class="section-title">
+                        <span class="section-icon">🎯</span>
+                        Template Selection
+                    </div>
+                    <span class="collapse-icon expanded">+</span>
+                </div>
+                <div class="section-content expanded" id="template-content">
+                    <div class="template-grid">
+                        <div class="template-option selected" onclick="selectTemplate('compliance-essentials')">
+                            <label>
+                                <input type="radio" name="template" value="compliance-essentials" checked>
+                                <div class="template-title">Compliance Essentials</div>
+                                <div class="template-description">Core fiduciary requirements and ERISA/CAA compliance questions</div>
+                                <div class="template-stats" id="essentials-stats">Loading...</div>
+                            </label>
+                        </div>
+                        <div class="template-option" onclick="selectTemplate('compliance-plus')">
+                            <label>
+                                <input type="radio" name="template" value="compliance-plus">
+                                <div class="template-title">Compliance Plus</div>
+                                <div class="template-description">Compliance requirements plus key differentiating questions</div>
+                                <div class="template-stats" id="plus-stats">Loading...</div>
+                            </label>
+                        </div>
+                        <div class="template-option" onclick="selectTemplate('full-evaluation')">
+                            <label>
+                                <input type="radio" name="template" value="full-evaluation">
+                                <div class="template-title">Full Evaluation</div>
+                                <div class="template-description">Comprehensive assessment with all relevant questions</div>
+                                <div class="template-stats" id="full-stats">Loading...</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan Type Selection -->
+            <div class="control-section" id="planSection" style="display: none;">
+                <div class="section-header" onclick="toggleSection('plan')">
+                    <div class="section-title">
+                        <span class="section-icon">🏥</span>
+                        Plan Types
+                    </div>
+                    <span class="collapse-icon">+</span>
+                </div>
+                <div class="section-content" id="plan-content">
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="commercialPlans" checked onchange="updateQuestionSelection()">
+                            <label for="commercialPlans">Commercial Plans</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="medicarePlans" checked onchange="updateQuestionSelection()">
+                            <label for="medicarePlans">Medicare Plans</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topics & Levels -->
+            <div class="control-section" id="topicSection" style="display: none;">
+                <div class="section-header" onclick="toggleSection('topics')">
+                    <div class="section-title">
+                        <span class="section-icon">📚</span>
+                        Topics & Levels
+                    </div>
+                    <span class="collapse-icon">+</span>
+                </div>
+                <div class="section-content" id="topics-content">
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary btn-sm" onclick="selectAllLevels()">All</button>
+                        <button class="btn btn-secondary btn-sm" onclick="clearAllLevels()">None</button>
+                        <button class="btn btn-secondary btn-sm" onclick="selectOnlyLevel1()">Level 1</button>
+                    </div>
+                    <div id="topicLevelSelection"></div>
+                </div>
+            </div>
+
+            <!-- Contract Terms -->
+            <div class="control-section" id="contractSection" style="display: none;">
+                <div class="section-header" onclick="toggleSection('contract')">
+                    <div class="section-title">
+                        <span class="section-icon">📋</span>
+                        Contract Terms
+                    </div>
+                    <span class="collapse-icon">+</span>
+                </div>
+                <div class="section-content" id="contract-content">
+                    <div id="contractTermsList">
+                        <!-- Contract terms will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evaluation Weights -->
+            <div class="control-section" id="evaluationSection" style="display: none;">
+                <div class="section-header" onclick="toggleSection('evaluation')">
+                    <div class="section-title">
+                        <span class="section-icon">⚖️</span>
+                        Evaluation Weights
+                    </div>
+                    <span class="collapse-icon">+</span>
+                </div>
+                <div class="section-content" id="evaluation-content">
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary btn-sm" onclick="loadStandardWeights()">Standard</button>
+                        <button class="btn btn-secondary btn-sm" onclick="resetToEqualWeights()">Equal</button>
+                    </div>
+                    <div class="weight-section">
+                        <div id="categoryWeights"></div>
+                        <div class="total-weight" id="totalWeight">Total: 0%</div>
+                    </div>
+                    <div class="multiplier-section">
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #495057;">Level Multipliers</div>
+                        <div class="multiplier-item">
+                            <span class="multiplier-label">Level 1:</span>
+                            <input type="number" class="multiplier-input" id="level1Multiplier" value="3" min="1" max="5" step="0.1" onchange="updateMultipliers()">
+                        </div>
+                        <div class="multiplier-item">
+                            <span class="multiplier-label">Level 2:</span>
+                            <input type="number" class="multiplier-input" id="level2Multiplier" value="2" min="1" max="5" step="0.1" onchange="updateMultipliers()">
+                        </div>
+                        <div class="multiplier-item">
+                            <span class="multiplier-label">Level 3:</span>
+                            <input type="number" class="multiplier-input" id="level3Multiplier" value="1" min="1" max="5" step="0.1" onchange="updateMultipliers()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="control-section" id="summarySection" style="display: none;">
+                <div class="section-header" onclick="toggleSection('summary')">
+                    <div class="section-title">
+                        <span class="section-icon">📊</span>
+                        Selection Summary
+                    </div>
+                    <span class="collapse-icon">+</span>
+                </div>
+                <div class="section-content" id="summary-content">
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <div class="summary-number" id="selectedQuestions">0</div>
+                            <div class="summary-label">Questions</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-number" id="selectedContracts">0</div>
+                            <div class="summary-label">Contract Terms</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-number" id="rfiQuestions">0</div>
+                            <div class="summary-label">RFI</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-number" id="level1Selected">0</div>
+                            <div class="summary-label">Level 1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Documents -->
+            <div class="control-section" id="generateSection" style="display: none;">
+                <div class="section-header" onclick="toggleSection('generate')">
+                    <div class="section-title">
+                        <span class="section-icon">📄</span>
+                        Generate Documents
+                    </div>
+                    <span class="collapse-icon">+</span>
+                </div>
+                <div class="section-content" id="generate-content">
+                    <div class="generate-buttons">
+                        <button class="btn btn-success" onclick="generateRFI()">📋 Generate RFI</button>
+                        <button class="btn btn-success" onclick="generateRFP()">📋 Generate RFP</button>
+                        <button class="btn btn-success" onclick="generateExcelTemplate()">📊 Excel Template</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Question Panel -->
+        <div class="right-panel">
+            <div class="question-header">
+                <div class="question-title">Question Selection</div>
+                <div class="question-controls">
+                    <button class="btn btn-secondary btn-sm" onclick="selectAllQuestions()">✅ Select All</button>
+                    <button class="btn btn-secondary btn-sm" onclick="clearAllQuestions()">❌ Clear All</button>
+                </div>
+            </div>
+            <div class="question-list-container" id="questionListContainer">
+                <div id="questionList">
+                    <div style="padding: 40px; text-align: center; color: #6c757d;">
+                        Upload a CSV file to begin question selection
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var questions = [];
+        var contracts = [];
+        var filteredQuestions = [];
+        var selectedQuestionIds = new Set();
+        var selectedContractIds = new Set();
+        var categoryWeights = {};
+        var questionMultipliers = { level1: 3, level2: 2, level3: 1 };
+        var currentTemplate = 'compliance-essentials';
+
+        // Template definitions
+        var templates = {
+            'compliance-essentials': {
+                name: 'Compliance Essentials',
+                description: 'Core fiduciary requirements and ERISA/CAA compliance questions',
+                questionFilter: function(q) {
+                    return q.fiduciaryRequired === true || q.fiduciaryRequired === 'TRUE' || q.fiduciaryRequired === 'Yes';
+                },
+                contractFilter: function(c) {
+                    return c.template === 'compliance-essentials' || c.template === 'Compliance Essentials';
+                }
+            },
+            'compliance-plus': {
+                name: 'Compliance Plus',
+                description: 'Compliance requirements plus key differentiating questions',
+                questionFilter: function(q) {
+                    return (q.fiduciaryRequired === true || q.fiduciaryRequired === 'TRUE' || q.fiduciaryRequired === 'Yes') ||
+                           (q.rfiEssential === true || q.rfiEssential === 'TRUE' || q.rfiEssential === 'Yes');
+                },
+                contractFilter: function(c) {
+                    return c.template === 'compliance-plus' || c.template === 'Compliance Plus' ||
+                           c.template === 'compliance-essentials' || c.template === 'Compliance Essentials';
+                }
+            },
+            'full-evaluation': {
+                name: 'Full Evaluation',
+                description: 'Comprehensive assessment with all relevant questions',
+                questionFilter: function(q) {
+                    return true; // Include all questions
+                },
+                contractFilter: function(c) {
+                    return true; // Include all contracts
+                }
+            }
+        };
+
+        // Sample contract terms (in real implementation, this would come from contracts.csv)
+        var sampleContracts = [
+            {
+                id: 'C001',
+                title: 'Data Security & Privacy',
+                description: 'Requirements for data encryption, access controls, and privacy protection',
+                template: 'compliance-essentials',
+                required: true
+            },
+            {
+                id: 'C002',
+                title: 'Pricing Transparency',
+                description: 'Full disclosure of rebates, spread pricing, and administrative fees',
+                template: 'compliance-plus',
+                required: false
+            },
+            {
+                id: 'C003',
+                title: 'Performance Guarantees',
+                description: 'Service level agreements and financial penalties for non-compliance',
+                template: 'full-evaluation',
+                required: false
+            },
+            {
+                id: 'C004',
+                title: 'Audit Rights',
+                description: 'Plan sponsor rights to audit PBM books and records',
+                template: 'compliance-essentials',
+                required: true
+            },
+            {
+                id: 'C005',
+                title: 'Formulary Management',
+                description: 'Clinical criteria and P&T committee independence requirements',
+                template: 'compliance-plus',
+                required: false
+            }
+        ];
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 PBM Configurator Enhanced starting...');
+            setupFileUpload();
+            initializeCollapsibleSections();
+            contracts = sampleContracts; // In real app, load from contracts.csv
+        });
+
+        function initializeCollapsibleSections() {
+            // Set default expanded state for template section
+            var uploadSection = document.querySelector('[onclick="toggleSection(\'upload\')"]');
+            if (uploadSection) {
+                uploadSection.click(); // Expand upload section by default
+            }
+        }
+
+        function toggleSection(sectionId) {
+            var header = document.querySelector(`[onclick="toggleSection('${sectionId}')"]`);
+            var content = document.getElementById(`${sectionId}-content`);
+            var icon = header.querySelector('.collapse-icon');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                header.classList.remove('active');
+                icon.classList.remove('expanded');
+                icon.textContent = '+';
+            } else {
+                content.classList.add('expanded');
+                header.classList.add('active');
+                icon.classList.add('expanded');
+                icon.textContent = '+';
+            }
+        }
+
+        function selectTemplate(templateId) {
+            currentTemplate = templateId;
+            
+            // Update UI
+            document.querySelectorAll('.template-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Update radio button
+            document.querySelector(`input[value="${templateId}"]`).checked = true;
+            
+            // Apply template selection
+            applyTemplate();
+        }
+
+        function applyTemplate() {
+            if (questions.length === 0) return;
+            
+            var template = templates[currentTemplate];
+            if (!template) return;
+            
+            // Clear current selections
+            selectedQuestionIds.clear();
+            selectedContractIds.clear();
+            
+            // Apply question filter
+            for (var i = 0; i < questions.length; i++) {
+                var q = questions[i];
+                if (template.questionFilter(q)) {
+                    selectedQuestionIds.add(i);
+                }
+            }
+            
+            // Apply contract filter
+            for (var i = 0; i < contracts.length; i++) {
+                var c = contracts[i];
+                if (template.contractFilter(c)) {
+                    selectedContractIds.add(i);
+                }
+            }
+            
+            // Update question selection based on other filters
+            updateQuestionSelection();
+            updateContractDisplay();
+            updateSummary();
+        }
+
+        function updateTemplateStats() {
+            if (questions.length === 0) return;
+            
+            Object.keys(templates).forEach(templateId => {
+                var template = templates[templateId];
+                var questionCount = 0;
+                var contractCount = 0;
+                
+                // Count questions for this template
+                for (var i = 0; i < questions.length; i++) {
+                    if (template.questionFilter(questions[i])) {
+                        questionCount++;
+                    }
+                }
+                
+                // Count contracts for this template
+                for (var i = 0; i < contracts.length; i++) {
+                    if (template.contractFilter(contracts[i])) {
+                        contractCount++;
+                    }
+                }
+                
+                // Update stats display
+                var statsElement = document.getElementById(templateId.replace('-', '-').split('-')[0] === 'compliance' ? 
+                    (templateId.includes('essentials') ? 'essentials-stats' : 'plus-stats') : 'full-stats');
+                if (statsElement) {
+                    statsElement.textContent = `${questionCount} questions • ${contractCount} contract terms`;
+                }
+            });
+        }
+
+        function setupFileUpload() {
+            var fileInput = document.getElementById('csvFile');
+            if (!fileInput) {
+                console.error('File input not found!');
+                return;
+            }
+
+            fileInput.addEventListener('change', function(e) {
+                console.log('📁 File selected');
+                var file = e.target.files[0];
+                
+                if (!file) return;
+                
+                console.log('Processing:', file.name);
+                
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        var csvData = e.target.result;
+                        
+                        if (typeof Papa === 'undefined') {
+                            throw new Error('Papa Parse library not available');
+                        }
+                        
+                        var parsed = Papa.parse(csvData, {
+                            header: true,
+                            skipEmptyLines: true,
+                            transformHeader: function(header) {
+                                return header.trim();
+                            }
+                        });
+                        
+                        if (parsed.errors.length > 0) {
+                            throw new Error('CSV parsing error: ' + parsed.errors[0].message);
+                        }
+                        
+                        if (parsed.data.length === 0) {
+                            throw new Error('No data found in CSV file');
+                        }
+                        
+                        console.log('✅ CSV parsed successfully!', parsed.data.length, 'rows');
+                        
+                        // Process the data to handle boolean fields
+                        questions = parsed.data.map(function(row) {
+                            // Convert string boolean values to actual booleans
+                            if (row.fiduciaryRequired) {
+                                row.fiduciaryRequired = row.fiduciaryRequired.toLowerCase() === 'true' || row.fiduciaryRequired.toLowerCase() === 'yes';
+                            }
+                            if (row.rfiEssential) {
+                                row.rfiEssential = row.rfiEssential.toLowerCase() === 'true' || row.rfiEssential.toLowerCase() === 'yes';
+                            }
+                            return row;
+                        });
+                        
+                        handleSuccessfulUpload();
+                        
+                    } catch (error) {
+                        console.error('❌ Upload error:', error);
+                        alert('Error processing CSV file: ' + error.message);
+                    }
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+
+        function handleSuccessfulUpload() {
+            console.log('🎉 Upload successful, setting up interface...');
+            
+            // Update upload area
+            document.getElementById('uploadArea').classList.add('uploaded');
+            document.getElementById('uploadPrompt').classList.add('hidden');
+            document.getElementById('uploadSuccess').classList.remove('hidden');
+            document.getElementById('uploadDetails').textContent = questions.length + ' questions loaded';
+            
+            // Show all sections
+            document.getElementById('templateSection').style.display = 'block';
+            document.getElementById('planSection').style.display = 'block';
+            document.getElementById('topicSection').style.display = 'block';
+            document.getElementById('contractSection').style.display = 'block';
+            document.getElementById('evaluationSection').style.display = 'block';
+            document.getElementById('summarySection').style.display = 'block';
+            document.getElementById('generateSection').style.display = 'block';
+            
+            // Initialize scoring system
+            initializeStandardWeights();
+            createTopicLevelInterface();
+            createCategoryWeights();
+            updateTemplateStats();
+            updateContractDisplay();
+            
+            // Apply initial template
+            applyTemplate();
+        }
+
+        function updateContractDisplay() {
+            var container = document.getElementById('contractTermsList');
+            container.innerHTML = '';
+            
+            if (contracts.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">No contract terms available</div>';
+                return;
+            }
+            
+            contracts.forEach(function(contract, index) {
+                var isSelected = selectedContractIds.has(index);
+                
+                var contractDiv = document.createElement('div');
+                contractDiv.className = 'contract-item' + (isSelected ? ' selected' : '');
+                
+                contractDiv.innerHTML = `
+                    <input type="checkbox" class="contract-checkbox" ${isSelected ? 'checked' : ''} 
+                           onchange="toggleContractSelection(${index})">
+                    <div class="contract-content">
+                        <div class="contract-title">${contract.title}</div>
+                        <div class="contract-description">${contract.description}</div>
+                    </div>
+                `;
+                
+                container.appendChild(contractDiv);
+            });
+        }
+
+        function toggleContractSelection(contractIndex) {
+            if (selectedContractIds.has(contractIndex)) {
+                selectedContractIds.delete(contractIndex);
+            } else {
+                selectedContractIds.add(contractIndex);
+            }
+            updateContractDisplay();
+            updateSummary();
+        }
+
+        // Include all the existing functions from the previous version
+        // (initializeStandardWeights, normalizeWeights, getFieldName, etc.)
+        // For brevity, I'll include just the key new/modified functions
+
+        function initializeStandardWeights() {
+            categoryWeights = {};
+            
+            if (questions.length === 0) return;
+            
+            var categoryField = getFieldName(questions[0], ['fiduciaryTopic']);
+            var topics = getUniqueTopics(categoryField);
+            
+            for (var i = 0; i < topics.length; i++) {
+                var topic = topics[i];
+                var topicLower = topic.toLowerCase();
+                if (topicLower.indexOf('data') >= 0 || topicLower.indexOf('audit') >= 0 || topicLower.indexOf('transparency') >= 0) {
+                    categoryWeights[topic] = 25;
+                } else if (topicLower.indexOf('financial') >= 0 || topicLower.indexOf('regulatory') >= 0 || topicLower.indexOf('compliance') >= 0) {
+                    categoryWeights[topic] = 20;
+                } else if (topicLower.indexOf('clinical') >= 0 || topicLower.indexOf('fraud') >= 0 || topicLower.indexOf('governance') >= 0) {
+                    categoryWeights[topic] = 15;
+                } else if (topicLower.indexOf('business') >= 0 || topicLower.indexOf('specialty') >= 0 || topicLower.indexOf('drug') >= 0) {
+                    categoryWeights[topic] = 10;
+                } else {
+                    categoryWeights[topic] = 5;
+                }
+            }
+            
+            normalizeWeights();
+        }
+
+        function normalizeWeights() {
+            var totalWeight = 0;
+            for (var topic in categoryWeights) {
+                totalWeight += categoryWeights[topic];
+            }
+            
+            if (totalWeight !== 100 && totalWeight > 0) {
+                var scaleFactor = 100 / totalWeight;
+                for (var topic in categoryWeights) {
+                    categoryWeights[topic] = Math.round(categoryWeights[topic] * scaleFactor);
+                }
+                
+                var newTotal = 0;
+                for (var topic in categoryWeights) {
+                    newTotal += categoryWeights[topic];
+                }
+                if (newTotal !== 100) {
+                    var topics = Object.keys(categoryWeights);
+                    if (topics.length > 0) {
+                        categoryWeights[topics[0]] += (100 - newTotal);
+                    }
+                }
+            }
+        }
+
+        function getFieldName(sampleQuestion, searchTerms) {
+            var keys = Object.keys(sampleQuestion);
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                for (var j = 0; j < searchTerms.length; j++) {
+                    if (key.toLowerCase().indexOf(searchTerms[j].toLowerCase()) >= 0) {
+                        return key;
+                    }
+                }
+            }
+            return searchTerms[0];
+        }
+
+        function getUniqueTopics(categoryField) {
+            var topics = [];
+            var topicSet = new Set();
+            for (var i = 0; i < questions.length; i++) {
+                var topic = questions[i][categoryField];
+                if (topic && !topicSet.has(topic)) {
+                    topicSet.add(topic);
+                    topics.push(topic);
+                }
+            }
+            return topics.sort();
+        }
+
+        function createTopicLevelInterface() {
+            var container = document.getElementById('topicLevelSelection');
+            container.innerHTML = '';
+            
+            if (questions.length === 0) return;
+            
+            var categoryField = getFieldName(questions[0], ['fiduciaryTopic']);
+            var levelField = getFieldName(questions[0], ['level']);
+            var topics = getUniqueTopics(categoryField);
+            
+            for (var i = 0; i < topics.length; i++) {
+                var topic = topics[i];
+                var topicQuestions = questions.filter(function(q) { return q[categoryField] === topic; });
+                var levels = [];
+                var levelSet = new Set();
+                
+                for (var j = 0; j < topicQuestions.length; j++) {
+                    var level = parseInt(topicQuestions[j][levelField] || 1);
+                    if (!levelSet.has(level)) {
+                        levelSet.add(level);
+                        levels.push(level);
+                    }
+                }
+                levels.sort();
+                
+                var topicDiv = document.createElement('div');
+                topicDiv.className = 'topic-section';
+                
+                var levelCheckboxes = '';
+                for (var k = 0; k < levels.length; k++) {
+                    var level = levels[k];
+                    var levelCount = topicQuestions.filter(function(q) { 
+                        return parseInt(q[levelField] || 1) === level; 
+                    }).length;
+                    var checkboxId = 'level-' + encodeURIComponent(topic) + '-' + level;
+                    levelCheckboxes += '<div class="level-checkbox">' +
+                        '<input type="checkbox" id="' + checkboxId + '" checked onchange="updateQuestionSelection()">' +
+                        '<label for="' + checkboxId + '">Level ' + level + ' (' + levelCount + ')</label>' +
+                        '</div>';
+                }
+                
+                topicDiv.innerHTML = '<div class="topic-header">' + topic + 
+                    ' <span class="category-count">(' + topicQuestions.length + ')</span>' +
+                    '</div>' +
+                    '<div class="topic-levels">' + levelCheckboxes + '</div>';
+                
+                container.appendChild(topicDiv);
+            }
+        }
+
+        function createCategoryWeights() {
+            var container = document.getElementById('categoryWeights');
+            container.innerHTML = '';
+            
+            if (questions.length === 0) return;
+            
+            var categoryField = getFieldName(questions[0], ['fiduciaryTopic']);
+            var topics = getUniqueTopics(categoryField);
+            
+            for (var i = 0; i < topics.length; i++) {
+                var topic = topics[i];
+                if (!(topic in categoryWeights)) {
+                    categoryWeights[topic] = Math.floor(100 / topics.length);
+                }
+            }
+            
+            for (var topic in categoryWeights) {
+                if (topics.indexOf(topic) === -1) {
+                    delete categoryWeights[topic];
+                }
+            }
+            
+            // Store recommended weights for comparison
+            var recommendedWeights = {};
+            for (var i = 0; i < topics.length; i++) {
+                var topic = topics[i];
+                var topicLower = topic.toLowerCase();
+                if (topicLower.indexOf('data') >= 0 || topicLower.indexOf('audit') >= 0 || topicLower.indexOf('transparency') >= 0) {
+                    recommendedWeights[topic] = 25;
+                } else if (topicLower.indexOf('financial') >= 0 || topicLower.indexOf('regulatory') >= 0 || topicLower.indexOf('compliance') >= 0) {
+                    recommendedWeights[topic] = 20;
+                } else if (topicLower.indexOf('clinical') >= 0 || topicLower.indexOf('fraud') >= 0 || topicLower.indexOf('governance') >= 0) {
+                    recommendedWeights[topic] = 15;
+                } else if (topicLower.indexOf('business') >= 0 || topicLower.indexOf('specialty') >= 0 || topicLower.indexOf('drug') >= 0) {
+                    recommendedWeights[topic] = 10;
+                } else {
+                    recommendedWeights[topic] = 5;
+                }
+            }
+            
+            for (var i = 0; i < topics.length; i++) {
+                var topic = topics[i];
+                var weight = categoryWeights[topic] || 0;
+                var recommendedWeight = recommendedWeights[topic] || 0;
+                var priorityClass = getPriorityClass(weight, recommendedWeight);
+                
+                var div = document.createElement('div');
+                div.className = 'weight-item';
+                div.innerHTML = 
+                    '<div class="priority-indicator ' + priorityClass + '"></div>' +
+                    '<span class="weight-label">' + topic + ':</span>' +
+                    '<input type="range" class="weight-slider" min="0" max="40" value="' + weight + '" ' +
+                    'onchange="updateCategoryWeight(\'' + topic.replace(/'/g, "\\'") + '\', this.value, ' + recommendedWeight + ')">' +
+                    '<input type="number" class="weight-input" value="' + weight + '" min="0" max="40" ' +
+                    'onchange="updateCategoryWeight(\'' + topic.replace(/'/g, "\\'") + '\', this.value, ' + recommendedWeight + ')">' +
+                    '<span class="weight-display">' + weight + '%</span>';
+                container.appendChild(div);
+            }
+            
+            updateTotalWeight();
+        }
+
+        function getPriorityClass(currentWeight, recommendedWeight) {
+            var difference = Math.abs(currentWeight - recommendedWeight);
+            if (difference <= 5) {
+                return 'priority-green';
+            } else if (difference <= 10) {
+                return 'priority-yellow';
+            } else {
+                return 'priority-red';
+            }
+        }
+
+        function updateCategoryWeight(category, value, recommendedWeight) {
+            categoryWeights[category] = parseInt(value);
+            
+            var weightItem = event.target.closest('.weight-item');
+            var slider = weightItem.querySelector('.weight-slider');
+            var input = weightItem.querySelector('.weight-input');
+            var display = weightItem.querySelector('.weight-display');
+            var indicator = weightItem.querySelector('.priority-indicator');
+            
+            slider.value = value;
+            input.value = value;
+            display.textContent = value + '%';
+            
+            var priorityClass = getPriorityClass(parseInt(value), recommendedWeight);
+            indicator.className = 'priority-indicator ' + priorityClass;
+            
+            updateTotalWeight();
+        }
+
+        function updateTotalWeight() {
+            var total = 0;
+            for (var topic in categoryWeights) {
+                total += categoryWeights[topic];
+            }
+            var totalElement = document.getElementById('totalWeight');
+            totalElement.textContent = 'Total: ' + total + '%';
+            totalElement.className = total === 100 ? 'total-weight total-valid' : 'total-weight total-invalid';
+        }
+
+        function loadStandardWeights() {
+            initializeStandardWeights();
+            createCategoryWeights();
+        }
+
+        function resetToEqualWeights() {
+            if (questions.length === 0) return;
+            
+            var categoryField = getFieldName(questions[0], ['fiduciaryTopic']);
+            var topics = getUniqueTopics(categoryField);
+            var equalWeight = Math.floor(100 / topics.length);
+            
+            for (var i = 0; i < topics.length; i++) {
+                categoryWeights[topics[i]] = equalWeight;
+            }
+            
+            var remainder = 100 - (equalWeight * topics.length);
+            if (remainder > 0 && topics.length > 0) {
+                categoryWeights[topics[0]] += remainder;
+            }
+            
+            createCategoryWeights();
+        }
+
+        function updateMultipliers() {
+            questionMultipliers.level1 = parseFloat(document.getElementById('level1Multiplier').value);
+            questionMultipliers.level2 = parseFloat(document.getElementById('level2Multiplier').value);
+            questionMultipliers.level3 = parseFloat(document.getElementById('level3Multiplier').value);
+        }
+
+        function updateQuestionSelection() {
+            if (questions.length === 0) return;
+            
+            var categoryField = getFieldName(questions[0], ['fiduciaryTopic']);
+            var levelField = getFieldName(questions[0], ['level']);
+            var planTypeField = getFieldName(questions[0], ['planType']);
+            var phaseField = getFieldName(questions[0], ['phase']);
+            
+            var rfiTemplate = document.getElementById('rfiTemplate') ? document.getElementById('rfiTemplate').checked : true;
+            var rfpTemplate = document.getElementById('rfpTemplate') ? document.getElementById('rfpTemplate').checked : true;
+            var commercialPlans = document.getElementById('commercialPlans').checked;
+            var medicarePlans = document.getElementById('medicarePlans').checked;
+            
+            var selectedTopicLevels = {};
+            var levelCheckboxes = document.querySelectorAll('[id^="level-"]');
+            for (var i = 0; i < levelCheckboxes.length; i++) {
+                var cb = levelCheckboxes[i];
+                if (cb.checked) {
+                    var parts = cb.id.replace('level-', '').split('-');
+                    var level = parts.pop();
+                    var topic = decodeURIComponent(parts.join('-'));
+                    
+                    if (!selectedTopicLevels[topic]) {
+                        selectedTopicLevels[topic] = [];
+                    }
+                    selectedTopicLevels[topic].push(parseInt(level));
+                }
+            }
+            
+            filteredQuestions = [];
+            for (var i = 0; i < questions.length; i++) {
+                var q = questions[i];
+                var topic = q[categoryField];
+                var level = parseInt(q[levelField] || 1);
+                var planType = q[planTypeField] || 'Both';
+                var phase = q[phaseField] || 'Both';
+                
+                var topicLevelMatch = selectedTopicLevels[topic] && selectedTopicLevels[topic].indexOf(level) >= 0;
+                
+                var planMatch = true;
+                if (!commercialPlans && !medicarePlans) {
+                    planMatch = false;
+                } else if (commercialPlans && !medicarePlans) {
+                    planMatch = planType === 'Commercial' || planType === 'Both';
+                } else if (!commercialPlans && medicarePlans) {
+                    planMatch = planType === 'Medicare' || planType === 'Both';
+                }
+                
+                var phaseMatch = true;
+                if (!rfiTemplate && !rfpTemplate) {
+                    phaseMatch = false;
+                } else if (rfiTemplate && !rfpTemplate) {
+                    phaseMatch = phase === 'RFI' || phase === 'Both';
+                } else if (!rfiTemplate && rfpTemplate) {
+                    phaseMatch = phase === 'RFP' || phase === 'Both';
+                }
+                
+                if (topicLevelMatch && planMatch && phaseMatch) {
+                    filteredQuestions.push(q);
+                }
+            }
+            
+            displayQuestionList();
+            updateSummary();
+        }
+
+        function displayQuestionList() {
+            var container = document.getElementById('questionList');
+            container.innerHTML = '';
+            
+            if (filteredQuestions.length === 0) {
+                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #6c757d;">No questions match your current selection</div>';
+                return;
+            }
+            
+            var categoryField = getFieldName(questions[0], ['fiduciaryTopic']);
+            var levelField = getFieldName(questions[0], ['level']);
+            var questionTextField = getFieldName(questions[0], ['question']);
+            var phaseField = getFieldName(questions[0], ['phase']);
+            var planTypeField = getFieldName(questions[0], ['planType']);
+            var abbreviationField = getFieldName(questions[0], ['Abbreviation']);
+            
+            var questionsByCategory = {};
+            for (var i = 0; i < filteredQuestions.length; i++) {
+                var q = filteredQuestions[i];
+                var category = q[categoryField];
+                if (!questionsByCategory[category]) {
+                    questionsByCategory[category] = [];
+                }
+                
+                // Find original index in questions array
+                var originalIndex = questions.indexOf(q);
+                questionsByCategory[category].push({ question: q, originalIndex: originalIndex });
+            }
+            
+            var categories = Object.keys(questionsByCategory).sort();
+            
+            for (var i = 0; i < categories.length; i++) {
+                var category = categories[i];
+                
+                var categoryHeader = document.createElement('div');
+                categoryHeader.className = 'question-category-header';
+                categoryHeader.textContent = category + ' (' + questionsByCategory[category].length + ' questions)';
+                container.appendChild(categoryHeader);
+                
+                var categoryQuestions = questionsByCategory[category];
+                for (var j = 0; j < categoryQuestions.length; j++) {
+                    var item = categoryQuestions[j];
+                    var question = item.question;
+                    var originalIndex = item.originalIndex;
+                    
+                    var questionNumber = generateQuestionNumber(question, j, category, abbreviationField);
+                    var level = parseInt(question[levelField] || 1);
+                    var phase = question[phaseField] || 'Both';
+                    var planType = question[planTypeField] || 'Both';
+                    var questionText = question[questionTextField] || 'No question text';
+                    
+                    var questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-item';
+                    
+                    var isSelected = selectedQuestionIds.has(originalIndex);
+                    
+                    var badges = getLevelBadge(level) + getPlanTypeBadge(planType) + getTemplateBadge(phase);
+                    
+                    // Add template-specific badges
+                    if (question.fiduciaryRequired) {
+                        badges += '<span class="badge fiduciary-required">Fiduciary</span>';
+                    }
+                    if (question.rfiEssential) {
+                        badges += '<span class="badge rfi-essential">Essential</span>';
+                    }
+                    
+                    questionDiv.innerHTML = 
+                        '<input type="checkbox" class="question-checkbox" ' +
+                        (isSelected ? 'checked' : '') + 
+                        ' onchange="toggleQuestionSelection(' + originalIndex + ')">' +
+                        '<div class="question-content">' +
+                        '<div class="question-number">' + questionNumber + '</div>' +
+                        '<div class="question-text">' + questionText + '</div>' +
+                        '<div class="question-badges">' + badges + '</div>' +
+                        '</div>';
+                    
+                    container.appendChild(questionDiv);
+                }
+            }
+        }
+
+        function generateQuestionNumber(question, index, category, abbreviationField) {
+            var abbreviation = question[abbreviationField];
+            if (abbreviation) {
+                return abbreviation + '-' + String(index + 1).padStart(3, '0');
+            }
