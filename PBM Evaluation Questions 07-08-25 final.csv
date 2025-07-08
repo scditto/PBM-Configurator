@@ -1,0 +1,280 @@
+number,question,fiduciaryTopic,abbreviation,level,phase,planType,complianceEssentials,compliancePlus,complianceFull
+1,How many years has your PBM been in operation and have there been any ownership changes mergers or acquisitions in the past 5 years?,Business Model & Revenue,BM,1,RFI,Both,TRUE,TRUE,TRUE
+2,Are you an independent PBM or affiliated with a pharmacy health plan or manufacturer?,Business Model & Revenue,BM,1,RFI,Both,TRUE,TRUE,TRUE
+3,List all subsidiaries affiliates and ownership details.,Business Model & Revenue,BM,2,RFP,Both,FALSE,TRUE,TRUE
+4,Please provide the percentage breakdown of your revenue by source: administrative fees drug mark-ups manufacturer payments spread pricing and other sources.,Business Model & Revenue,BM,1,RFI,Both,TRUE,TRUE,TRUE
+5,What contracting models do you offer? (Fee-based Pass-through Traditional/spread Hybrid),Business Model & Revenue,BM,1,RFI,Both,TRUE,TRUE,TRUE
+6,Do you have a conflict-of-interest policy regarding manufacturer and pharmacy relationships?,Business Model & Revenue,BM,1,RFI,Both,TRUE,TRUE,TRUE
+7,Are you owned by or do you own any subsidiaries or affiliates that could create conflicts of interest?,Business Model & Revenue,BM,1,RFI,Both,TRUE,TRUE,TRUE
+8,What percentage of your business comes from self-funded vs. fully insured?,Business Model & Revenue,BM,1,RFI,Both,FALSE,TRUE,TRUE
+9,What is your client retention rate over the past five years?,Business Model & Revenue,BM,1,RFI,Both,FALSE,TRUE,TRUE
+10,Do you allow carve-outs for specialty pharmacy rebate management or other services?,Business Model & Revenue,BM,1,RFI,Both,FALSE,TRUE,TRUE
+11,What PBM services do you offer in-house vs. outsourced?,Business Model & Revenue,BM,1,RFI,Both,FALSE,TRUE,TRUE
+12,Do you own or operate your own mail-order pharmacy?,Business Model & Revenue,BM,1,RFI,Both,FALSE,TRUE,TRUE
+13,For each contracting model you offer provide specific details on pricing structure rebate handling and fee arrangements.,Business Model & Revenue,BM,2,RFP,Both,FALSE,TRUE,TRUE
+14,How do you differentiate your PBM from competitors?,Business Model & Revenue,BM,2,RFP,Both,FALSE,TRUE,TRUE
+15,Do you provide full pass-through pricing?,Financial Transparency,FT,1,RFI,Both,TRUE,TRUE,TRUE
+16,Do you guarantee clients receive 100% of manufacturer payments?,Financial Transparency,FT,1,RFI,Both,TRUE,TRUE,TRUE
+17,Do you provide full disclosure of rebates by NDC?,Financial Transparency,FT,1,RFI,Both,TRUE,TRUE,TRUE
+18,Have you faced litigation related to drug pricing rebates or spread pricing?,Financial Transparency,FT,1,RFI,Both,TRUE,TRUE,TRUE
+19,Have you had clients terminate contracts due to pricing transparency issues?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+20,Do you provide real-time rebate reconciliation reports?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+21,What level of data visibility do clients have into pricing models?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+22,Do you provide PBM pricing guarantees?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+23,Do you provide real-time access to MAC list pricing updates?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+24,What AWP discount percentages do you provide?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+25,Do you provide quarterly financial reconciliation reports?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+26,Can clients customize pricing terms based on their specific needs?,Financial Transparency,FT,1,RFI,Both,FALSE,TRUE,TRUE
+27,How do you handle mid-contract pricing changes?,Financial Transparency,FT,2,RFP,Both,FALSE,TRUE,TRUE
+28,How frequently do you update MAC pricing?,Financial Transparency,FT,2,RFP,Both,FALSE,TRUE,TRUE
+29,How do you ensure accurate reporting of pass-through vs. retained rebates?,Financial Transparency,FT,2,RFP,Both,FALSE,TRUE,TRUE
+30,Do you provide detailed rebate reconciliation reports showing collected vs. passed-through amounts?,Financial Transparency,FT,2,RFI,Both,FALSE,TRUE,TRUE
+31,We require full audit rights in our contract. Do you agree to unrestricted audit access?,Data Rights & Audit,DA,1,RFI,Both,TRUE,TRUE,TRUE
+32,We require real-time access to all claims data including ingredient costs dispensing fees spread amounts and NDC-level detail. Will you provide this access?,Data Rights & Audit,DA,1,RFI,Both,TRUE,TRUE,TRUE
+33,We maintain ownership of all pharmacy claims data and member information. Do you acknowledge our data ownership rights?,Data Rights & Audit,DA,1,RFI,Both,TRUE,TRUE,TRUE
+34,We require access to and export of all our data upon contract termination with no restrictions. Do you guarantee complete data portability?,Data Rights & Audit,DA,1,RFI,Both,TRUE,TRUE,TRUE
+35,We require real-time access to audit all rebate data and transactions. Will you provide unrestricted rebate audit access?,Data Rights & Audit,DA,1,RFI,Both,TRUE,TRUE,TRUE
+36,We require the right to use independent third-party auditors. Do you agree to full cooperation with our chosen auditors?,Data Rights & Audit,DA,1,RFI,Both,FALSE,TRUE,TRUE
+37,We reserve the right to conduct financial audits at any time with 30 days notice. Do you agree to this audit schedule?,Data Rights & Audit,DA,1,RFI,Both,FALSE,TRUE,TRUE
+38,We will select our own independent auditors without PBM approval. Do you agree to work with any qualified auditor we choose?,Data Rights & Audit,DA,1,RFI,Both,FALSE,TRUE,TRUE
+39,What specific data fields do you provide in your claims data feed?,Data Rights & Audit,DA,1,RFI,Both,FALSE,TRUE,TRUE
+40,Can we access custom reporting dashboards for claims audits?,Data Rights & Audit,DA,1,RFI,Both,FALSE,TRUE,TRUE
+41,What is your policy on data retention after contract termination?,Data Rights & Audit,DA,1,RFP,Both,FALSE,TRUE,TRUE
+42,Can we access real-time transaction-level audit trails showing what was changed when and by whom?,Data Rights & Audit,DA,1,RFP,Both,FALSE,TRUE,TRUE
+43,Do you use third-party compliance auditors to verify pricing and rebate accuracy?,Data Rights & Audit,DA,1,RFI,Both,FALSE,TRUE,TRUE
+44,What independent audit options do you provide for clients?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+45,What methodologies do you use to audit internal compliance with pricing and rebate terms?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+46,What experience do you have with Medicare Part D audits?,Data Rights & Audit,DA,2,RFI,Medicare,FALSE,TRUE,TRUE
+47,How do you prevent duplicate claims and overpayments?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+48,Do you provide real-time adjudication for claims?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+49,What percentage of claims are processed manually vs. automatically?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+50,How do you ensure that claims payments are accurate?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+51,How often do you conduct internal audits on claims?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+52,How do you handle pharmacy chargebacks?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+53,How do you track high-cost claims across multiple disease categories?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+54,Can you provide examples of past claims audits that identified cost savings?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+55,How often do you provide financial reconciliation reports?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+56,What data analytics capabilities do you offer?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+57,Do you provide benchmarking against industry standards?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+58,How do you handle client requests for custom reporting?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+59,How do you handle confidential client information?,Data Rights & Audit,DA,2,RFP,Both,FALSE,TRUE,TRUE
+60,What specific data fields can we access for each claim transaction?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+61,Can we see ingredient cost vs. amount paid to pharmacy for each claim?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+62,Do you provide spread pricing details by individual transaction?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+63,Can we access manufacturer rebate amounts by specific NDC/claim?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+64,What pricing benchmark data (AWP WAC MAC) do you provide in reports?,Data Rights & Audit,DA,2,RFI,Both,FALSE,TRUE,TRUE
+65,Have you ever been fined for noncompliance?,Regulatory Compliance,RC,1,RFI,Both,TRUE,TRUE,TRUE
+66,Have you had any regulatory violations in the past 3 years?,Regulatory Compliance,RC,1,RFI,Both,TRUE,TRUE,TRUE
+67,Have you ever had a data breach affecting PHI?,Regulatory Compliance,RC,1,RFI,Both,TRUE,TRUE,TRUE
+68,Are you compliant with HIPAA requirements?,Regulatory Compliance,RC,1,RFI,Both,TRUE,TRUE,TRUE
+69,How do you ensure compliance with CMS RxDC reporting requirements?,Regulatory Compliance,RC,1,RFP,Both,TRUE,TRUE,TRUE
+70,We require you to provide us with an RxDC report for our plan individually (not aggregated with others). Will you provide this?,Regulatory Compliance,RC,1,RFI,Both,TRUE,TRUE,TRUE
+71,Please provide audited financial statements for the past three years.,Regulatory Compliance,RC,1,RFI,Both,FALSE,TRUE,TRUE
+72,How do you provide RxDC-ready data exports and what format do you use?,Regulatory Compliance,RC,1,RFI,Both,FALSE,TRUE,TRUE
+73,Please provide a sample RxDC report.,Regulatory Compliance,RC,1,RFI,Both,FALSE,TRUE,TRUE
+74,How do you track and report on drug manufacturer price increases?,Regulatory Compliance,RC,1,RFI,Both,FALSE,TRUE,TRUE
+75,Please provide your current DEA registration and state licenses for PBM operations.,Regulatory Compliance,RC,1,RFI,Both,FALSE,TRUE,TRUE
+76,Do you have CMS-certified staff for Part D compliance?,Regulatory Compliance,RC,1,RFI,Medicare,FALSE,FALSE,TRUE
+77,Do you maintain current DEA registration for controlled substances?,Regulatory Compliance,RC,1,RFI,Both,FALSE,FALSE,TRUE
+78,What state licenses do you hold for PBM operations?,Regulatory Compliance,RC,1,RFI,Both,FALSE,FALSE,TRUE
+79,How do you ensure PBM contract compliance with state-specific laws?,Regulatory Compliance,RC,2,RFP,Both,FALSE,TRUE,TRUE
+80,What are your A.M. Best Moody's and Standard & Poor's ratings?,Regulatory Compliance,RC,2,RFI,Both,FALSE,TRUE,TRUE
+81,How do you comply with state PBM transparency laws?,Regulatory Compliance,RC,2,RFP,Both,FALSE,TRUE,TRUE
+82,What is your business continuity plan in the event of a cyberattack or data breach?,Regulatory Compliance,RC,2,RFP,Both,FALSE,TRUE,TRUE
+83,What level of client visibility is provided into RxDC submissions?,Regulatory Compliance,RC,2,RFI,Both,FALSE,TRUE,TRUE
+84,Do you report manufacturer-administered copay assistance programs in RxDC filings?,Regulatory Compliance,RC,2,RFI,Both,FALSE,TRUE,TRUE
+85,How do you track PBM service fees for RxDC reporting?,Regulatory Compliance,RC,2,RFP,Both,FALSE,TRUE,TRUE
+86,What is your method for resolving RxDC data discrepancies before submission?,Regulatory Compliance,RC,2,RFP,Both,FALSE,TRUE,TRUE
+87,How do you handle state-level pharmacy transparency reporting requirements?,Regulatory Compliance,RC,2,RFP,Both,FALSE,TRUE,TRUE
+88,What is your experience managing Medicare Part D plans?,Regulatory Compliance,RC,2,RFI,Medicare,FALSE,TRUE,TRUE
+89,How do you handle Medicare Part D pricing and rebate reporting?,Regulatory Compliance,RC,2,RFP,Medicare,FALSE,TRUE,TRUE
+90,How do you ensure Medicare Part D compliance across all plan offerings?,Regulatory Compliance,RC,2,RFP,Medicare,FALSE,TRUE,TRUE
+91,How do you ensure clinical program compliance with regulatory requirements?,Regulatory Compliance,RC,2,RFP,Both,FALSE,TRUE,TRUE
+92,How do you stay current with changing regulatory requirements?,Regulatory Compliance,RC,2,RFI,Both,FALSE,TRUE,TRUE
+93,What compliance training do you provide to staff?,Regulatory Compliance,RC,2,RFI,Both,FALSE,TRUE,TRUE
+94,How do you ensure compliance with Medicaid Best Price rules?,Regulatory Compliance,RC,3,RFP,Both,FALSE,FALSE,TRUE
+95,How do you handle Medicare Part D coverage gap (donut hole) calculations?,Regulatory Compliance,RC,3,RFP,Medicare,FALSE,FALSE,TRUE
+96,What is your approach to Medicare Part D risk adjustment?,Regulatory Compliance,RC,3,RFP,Medicare,FALSE,FALSE,TRUE
+97,How do you support compliance with fiduciary requirements?,Regulatory Compliance,RC,3,RFP,Both,FALSE,FALSE,TRUE
+98,Can we customize formularies based on cost and clinical efficacy?,Clinical Governance,CG,1,RFI,Both,TRUE,TRUE,TRUE
+99,Can we exclude specific drugs from the formulary?,Clinical Governance,CG,1,RFI,Both,TRUE,TRUE,TRUE
+100,How often do you review and update your formularies?,Clinical Governance,CG,1,RFI,Both,TRUE,TRUE,TRUE
+101,What is your process for prior authorization?,Clinical Governance,CG,1,RFI,Both,TRUE,TRUE,TRUE
+102,What is your policy on mandatory generic substitution?,Clinical Governance,CG,1,RFI,Both,TRUE,TRUE,TRUE
+103,How do you support tiered formulary structures?,Clinical Governance,CG,1,RFI,Both,FALSE,TRUE,TRUE
+104,How do you manage formulary placement for biosimilars?,Clinical Governance,CG,1,RFP,Both,FALSE,TRUE,TRUE
+105,What clinical programs do you offer?,Clinical Governance,CG,1,RFI,Both,FALSE,TRUE,TRUE
+106,What percentage of prescriptions are for brand-name drugs vs. generics?,Clinical Governance,CG,1,RFI,Both,FALSE,TRUE,TRUE
+107,Do you offer real-time formulary decision support for physicians?,Clinical Governance,CG,1,RFI,Both,FALSE,TRUE,TRUE
+108,Who is your Chief Medical Officer or equivalent clinical leader?,Clinical Governance,CG,1,RFI,Both,FALSE,TRUE,TRUE
+109,Do you have a Pharmacy & Therapeutics (P&T) Committee?,Clinical Governance,CG,1,RFI,Both,FALSE,TRUE,TRUE
+110,What clinical credentials are required for your clinical staff?,Clinical Governance,CG,1,RFI,Both,FALSE,TRUE,TRUE
+111,What is your process for Medicare Part D formulary management?,Clinical Governance,CG,2,RFP,Medicare,FALSE,TRUE,TRUE
+112,Do you provide Medicare Part D MTM services?,Clinical Governance,CG,2,RFI,Medicare,FALSE,TRUE,TRUE
+113,How do you ensure pharmacy compliance with clinical programs?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+114,How do you handle requests for non-formulary drugs?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+115,What is your process for removing high-cost drugs from the formulary?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+116,How do you assess the cost-effectiveness of new medications?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+117,How do you ensure that generic drugs are dispensed when appropriate?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+118,How do you track formulary compliance among prescribers?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+119,What is your process for evaluating high-cost specialty drug alternatives?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+120,Can you provide historical formulary change reports?,Clinical Governance,CG,2,RFI,Both,FALSE,TRUE,TRUE
+121,What strategies do you use to encourage biosimilar adoption?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+122,How do you monitor physician prescribing behavior for formulary compliance?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+123,Do you track and report on drug utilization trends by therapeutic class?,Clinical Governance,CG,2,RFI,Both,FALSE,TRUE,TRUE
+124,What is your cost control strategy for new-to-market drugs?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+125,How do you handle multi-source generics with significant price variability?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+126,Do you offer medication therapy management (MTM) services?,Clinical Governance,CG,2,RFI,Both,FALSE,TRUE,TRUE
+127,How do you identify candidates for clinical programs?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+128,What is your approach to medication therapy management?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+129,How do you measure clinical program effectiveness?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+130,Do you offer disease-specific management programs?,Clinical Governance,CG,2,RFI,Both,FALSE,TRUE,TRUE
+131,How do you coordinate care with physicians and other healthcare providers?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+132,How do you handle step therapy requirements?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+133,What criteria do you use for quantity limits?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+134,Do you offer pharmacist consultation services?,Clinical Governance,CG,2,RFI,Both,FALSE,TRUE,TRUE
+135,How do you track medication adherence?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+136,What interventions do you use to improve medication adherence?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+137,How do you handle drug recalls and safety alerts?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+138,Do you offer genetic testing or pharmacogenomics services?,Clinical Governance,CG,2,RFI,Both,FALSE,TRUE,TRUE
+139,How do you handle clinical exceptions and overrides?,Clinical Governance,CG,2,RFP,Both,FALSE,TRUE,TRUE
+140,Do you provide clinical decision support tools?,Clinical Governance,CG,2,RFI,Both,FALSE,TRUE,TRUE
+141,How do you monitor drug interactions and contraindications?,Clinical Governance,CG,3,RFP,Both,FALSE,FALSE,TRUE
+142,How do you manage polypharmacy in elderly patients?,Clinical Governance,CG,3,RFP,Both,FALSE,FALSE,TRUE
+143,What is your approach to opioid management and monitoring?,Clinical Governance,CG,3,RFP,Both,FALSE,FALSE,TRUE
+144,Is your core claims processing platform proprietary or licensed? If licensed from which vendor?,Technology & Integration,TI,1,RFI,Both,TRUE,TRUE,TRUE
+145,Do you offer real-time claims adjudication?,Technology & Integration,TI,1,RFI,Both,TRUE,TRUE,TRUE
+146,Can we integrate real-time claims data into our benefits administration platforms?,Technology & Integration,TI,1,RFI,Both,TRUE,TRUE,TRUE
+147,What system uptime/availability guarantees do you provide?,Technology & Integration,TI,1,RFI,Both,FALSE,TRUE,TRUE
+148,What is your average claims processing turnaround time?,Technology & Integration,TI,1,RFI,Both,FALSE,TRUE,TRUE
+149,Do you offer API integrations for client systems?,Technology & Integration,TI,1,RFI,Both,FALSE,TRUE,TRUE
+150,What is your error rate in claim adjudication?,Technology & Integration,TI,1,RFI,Both,FALSE,TRUE,TRUE
+151,What mobile applications do you provide for members and providers?,Technology & Integration,TI,1,RFI,Both,FALSE,TRUE,TRUE
+152,How do you handle system upgrades and maintenance windows?,Technology & Integration,TI,1,RFP,Both,FALSE,TRUE,TRUE
+153,What digital self-service tools do you provide?,Technology & Integration,TI,1,RFP,Both,FALSE,TRUE,TRUE
+154,What is your technology roadmap for the next 2-3 years?,Technology & Integration,TI,1,RFP,Both,FALSE,TRUE,TRUE
+155,What percentage of claims are denied on first submission?,Technology & Integration,TI,2,RFI,Both,FALSE,TRUE,TRUE
+156,What technology platforms do you use for pharmacy network management?,Technology & Integration,TI,2,RFI,Both,FALSE,TRUE,TRUE
+157,What cybersecurity certifications and frameworks do you maintain?,Technology & Integration,TI,2,RFI,Both,FALSE,TRUE,TRUE
+158,Describe your disaster recovery and business continuity plans,Technology & Integration,TI,2,RFI,Both,FALSE,TRUE,TRUE
+159,What cloud infrastructure do you use for hosting and security?,Technology & Integration,TI,2,RFI,Both,FALSE,TRUE,TRUE
+160,How do you integrate with electronic prescribing systems?,Technology & Integration,TI,2,RFI,Both,FALSE,TRUE,TRUE
+161,What artificial intelligence or machine learning capabilities do you use?,Technology & Integration,TI,2,RFP,Both,FALSE,TRUE,TRUE
+162,How do you ensure HIPAA compliance in your technology infrastructure?,Technology & Integration,TI,2,RFP,Both,FALSE,TRUE,TRUE
+163,Do you provide dedicated account management for plan sponsors?,Customer Service,CS,1,RFI,Both,TRUE,TRUE,TRUE
+164,What member communication channels do you offer (phone email chat mobile app)?,Customer Service,CS,1,RFI,Both,TRUE,TRUE,TRUE
+165,What is your first-call resolution rate?,Customer Service,CS,1,RFI,Both,FALSE,TRUE,TRUE
+166,What are your customer service hours of operation?,Customer Service,CS,1,RFI,Both,FALSE,TRUE,TRUE
+167,What is your average call answer time?,Customer Service,CS,1,RFI,Both,FALSE,TRUE,TRUE
+168,What digital tools do you offer for member self-service?,Customer Service,CS,1,RFI,Both,FALSE,TRUE,TRUE
+169,What languages do you offer for customer service support?,Customer Service,CS,1,RFI,Both,FALSE,TRUE,TRUE
+170,Do you provide 24/7 customer service support?,Customer Service,CS,1,RFI,Both,FALSE,FALSE,TRUE
+171,What is your customer service staffing model?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+172,Do you offer Medicare Part D Low Income Subsidy (LIS) support?,Customer Service,CS,2,RFI,Medicare,FALSE,TRUE,TRUE
+173,How do you handle appeals for denied pharmacy claims?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+174,What is your standard timeframe for claims dispute resolution?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+175,How do you handle pharmacy complaints or disputes?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+176,How do you ensure mail-order pharmacy quality and timeliness?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+177,What is your process for handling urgent prescription needs via mail-order?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+178,How many customer service representatives do you employ?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+179,How do you handle after-hours and emergency prescription needs?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+180,How do you track and resolve member complaints?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+181,Do you offer online chat or email support for members?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+182,How do you handle prior authorization requests from members?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+183,What member education resources do you provide?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+184,How do you communicate formulary changes to members?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+185,How do you handle prescription benefit inquiries?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+186,What is your process for handling pharmacy network issues?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+187,How do you measure member satisfaction?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+188,How do you handle prescription transfers between pharmacies?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+189,What training do your customer service representatives receive?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+190,How do you handle appeals for coverage denials?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+191,Do you offer employee education and communication services?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+192,What account management support do you provide?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+193,How do you handle contract disputes or issues?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+194,Do you provide training for client staff on PBM operations?,Customer Service,CS,2,RFI,Both,FALSE,TRUE,TRUE
+195,How do you measure and report on client satisfaction?,Customer Service,CS,2,RFP,Both,FALSE,TRUE,TRUE
+196,We do not allow generic drugs to be classified as specialty. How do you define specialty drugs?,Specialty Drug Management,SD,1,RFI,Both,TRUE,TRUE,TRUE
+197,What clinical effectiveness research services do you provide?,Specialty Drug Management,SD,1,RFI,Both,TRUE,TRUE,TRUE
+198,What site of care optimization programs do you provide?,Specialty Drug Management,SD,1,RFI,Both,TRUE,TRUE,TRUE
+199,Please provide your specialty drug list.,Specialty Drug Management,SD,1,RFI,Both,FALSE,TRUE,TRUE
+200,What percentage of your total drug spend is attributed to specialty drugs?,Specialty Drug Management,SD,1,RFI,Both,FALSE,TRUE,TRUE
+201,What percentage of PA requests are denied on first submission?,Specialty Drug Management,SD,1,RFI,Both,FALSE,TRUE,TRUE
+202,What is your average rebate per brand-name drug?,Specialty Drug Management,SD,1,RFI,Both,FALSE,TRUE,TRUE
+203,Do you have a dedicated specialty pharmacy network?,Specialty Drug Management,SD,1,RFI,Both,FALSE,TRUE,TRUE
+204,What patient support programs do you offer for specialty drugs?,Specialty Drug Management,SD,1,RFI,Both,FALSE,TRUE,TRUE
+205,What percentage of specialty drugs require prior authorization?,Specialty Drug Management,SD,2,RFI,Both,FALSE,TRUE,TRUE
+206,How do you ensure timely PA approvals for specialty drugs?,Specialty Drug Management,SD,2,RFP,Both,FALSE,TRUE,TRUE
+207,What is your strategy for managing high-cost one-time gene therapies?,Specialty Drug Management,SD,2,RFP,Both,FALSE,TRUE,TRUE
+208,How do you negotiate rebates for biosimilars vs. brand drugs?,Specialty Drug Management,SD,2,RFP,Both,FALSE,TRUE,TRUE
+209,Do you bundle rebates per manufacturer per drug or per class?,Specialty Drug Management,SD,2,RFI,Both,FALSE,TRUE,TRUE
+210,Can clients opt out of specific rebate contracts?,Specialty Drug Management,SD,2,RFI,Both,FALSE,TRUE,TRUE
+211,How do you ensure clients receive the highest possible rebate per script?,Specialty Drug Management,SD,2,RFP,Both,FALSE,TRUE,TRUE
+212,How do you ensure transparency in revenue-sharing arrangements with pharmacies?,Specialty Drug Management,SD,2,RFP,Both,FALSE,TRUE,TRUE
+213,How do you measure and improve specialty drug adherence?,Specialty Drug Management,SD,2,RFI,Both,FALSE,TRUE,TRUE
+214,What is your biosimilar adoption strategy and success rate?,Specialty Drug Management,SD,2,RFI,Both,FALSE,TRUE,TRUE
+215,How do you coordinate specialty drug benefits with medical benefits?,Specialty Drug Management,SD,2,RFP,Both,FALSE,TRUE,TRUE
+216,What specialty drug waste reduction programs do you offer?,Specialty Drug Management,SD,2,RFP,Both,FALSE,TRUE,TRUE
+217,How do you negotiate value-based pricing agreements for specialty drugs?,Specialty Drug Management,SD,3,RFP,Both,FALSE,FALSE,TRUE
+218,What fraud detection systems do you have in place?,Fraud Prevention,FP,1,RFI,Both,TRUE,TRUE,TRUE
+219,Have you had any significant fraud incidents in the past 3 years?,Fraud Prevention,FP,1,RFI,Both,TRUE,TRUE,TRUE
+220,What is your average fraud detection rate or fraud savings?,Fraud Prevention,FP,1,RFI,Both,FALSE,TRUE,TRUE
+221,How do you identify potential pharmacy fraud?,Fraud Prevention,FP,1,RFI,Both,FALSE,TRUE,TRUE
+222,Do you provide fraud reporting to regulatory agencies?,Fraud Prevention,FP,1,RFI,Both,FALSE,TRUE,TRUE
+223,What technology tools do you use for fraud detection?,Fraud Prevention,FP,1,RFI,Both,FALSE,TRUE,TRUE
+224,Do you guarantee fraud detection and prevention services?,Fraud Prevention,FP,1,RFI,Both,FALSE,TRUE,TRUE
+225,Do you maintain fraud prevention certifications or accreditations?,Fraud Prevention,FP,1,RFI,Both,FALSE,TRUE,TRUE
+226,How do you detect and investigate fraudulent billing practices?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+227,What fraud detection tools do you use to monitor claims anomalies?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+228,How do you report duplicate or fraudulent claims to regulatory agencies?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+229,What are your internal controls for preventing pharmacy overbilling?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+230,What is your process for investigating suspected fraud?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+231,How do you handle prescription forgery or alteration?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+232,How do you detect duplicate therapy or early refills?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+233,What training do you provide to pharmacies on fraud prevention?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+234,What is your process for recovering fraudulent payments?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+235,Do you offer whistleblower protections for fraud reporting?,Fraud Prevention,FP,2,RFI,Both,FALSE,TRUE,TRUE
+236,How do you measure the effectiveness of your fraud prevention programs?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+237,How do you handle patient privacy while investigating fraud?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+238,Do you conduct background checks on pharmacy partners?,Fraud Prevention,FP,2,RFI,Both,FALSE,TRUE,TRUE
+239,What is your process for terminating fraudulent pharmacy relationships?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+240,How do you educate members about prescription drug fraud?,Fraud Prevention,FP,2,RFP,Both,FALSE,TRUE,TRUE
+241,Do you provide fraud trend reporting to clients?,Fraud Prevention,FP,2,RFI,Both,FALSE,TRUE,TRUE
+242,What performance guarantees do you offer to clients?,Implementation & Operations,IO,1,RFI,Both,TRUE,TRUE,TRUE
+243,What employer KPIs do you track and report?,Implementation & Operations,IO,1,RFI,Both,TRUE,TRUE,TRUE
+244,What is your typical implementation timeline for new clients?,Implementation & Operations,IO,1,RFI,Both,FALSE,TRUE,TRUE
+245,What implementation services do you provide?,Implementation & Operations,IO,1,RFI,Both,FALSE,TRUE,TRUE
+246,What project management methodology do you use for implementations?,Implementation & Operations,IO,1,RFI,Both,FALSE,TRUE,TRUE
+247,What training do you provide to client staff during implementation?,Implementation & Operations,IO,1,RFI,Both,FALSE,TRUE,TRUE
+248,What tools do you provide for plan sponsor self-service?,Implementation & Operations,IO,1,RFI,Both,FALSE,TRUE,TRUE
+249,What value-added services do you offer beyond basic PBM administration?,Implementation & Operations,IO,1,RFI,Both,FALSE,TRUE,TRUE
+250,Can you provide a sample contract with detailed pricing terms?,Implementation & Operations,IO,2,RFI,Both,FALSE,TRUE,TRUE
+251,How do you ensure that pricing and contract terms remain competitive over time?,Implementation & Operations,IO,2,RFP,Both,FALSE,TRUE,TRUE
+252,Can clients customize their PBM contract based on their specific needs?,Implementation & Operations,IO,2,RFI,Both,FALSE,TRUE,TRUE
+253,How do you support plan design optimization?,Implementation & Operations,IO,2,RFP,Both,FALSE,TRUE,TRUE
+254,How do you handle benefit plan changes mid-year?,Implementation & Operations,IO,2,RFP,Both,FALSE,TRUE,TRUE
+255,How do you support clients during renewal periods?,Implementation & Operations,IO,2,RFP,Both,FALSE,TRUE,TRUE
+256,Do you offer consulting services for pharmacy benefit optimization?,Implementation & Operations,IO,2,RFI,Both,FALSE,TRUE,TRUE
+257,How do you handle implementation delays or issues?,Implementation & Operations,IO,2,RFI,Both,FALSE,TRUE,TRUE
+258,What change management support do you provide?,Implementation & Operations,IO,2,RFI,Both,FALSE,TRUE,TRUE
+259,What is your process for data migration and validation?,Implementation & Operations,IO,2,RFP,Both,FALSE,TRUE,TRUE
+260,How do you ensure business continuity during implementation?,Implementation & Operations,IO,2,RFP,Both,FALSE,TRUE,TRUE
+261,Do you provide actuarial support for plan design?,Implementation & Operations,IO,3,RFI,Both,FALSE,FALSE,TRUE
+262,What are your network adequacy standards?,Network & Access,NA,1,RFI,Both,TRUE,TRUE,TRUE
+263,How many pharmacies are in your retail network?,Network & Access,NA,1,RFI,Both,FALSE,TRUE,TRUE
+264,What percentage of prescriptions are filled through mail-order pharmacy?,Network & Access,NA,1,RFI,Both,FALSE,TRUE,TRUE
+265,Do you provide 24/7 emergency prescription access?,Network & Access,NA,1,RFI,Both,FALSE,TRUE,TRUE
+266,What pharmacy credentialing standards do you require?,Network & Access,NA,1,RFI,Both,FALSE,TRUE,TRUE
+267,Do you allow clients to customize their specialty pharmacy network?,Network & Access,NA,2,RFI,Both,FALSE,TRUE,TRUE
+268,Do you require members to use a single specialty pharmacy or multiple partners?,Network & Access,NA,2,RFI,Both,FALSE,TRUE,TRUE
+269,What percentage of your network pharmacies are independent vs. chain?,Network & Access,NA,2,RFI,Both,FALSE,TRUE,TRUE
+270,How do you ensure adequate geographic coverage for rural areas?,Network & Access,NA,2,RFP,Both,FALSE,TRUE,TRUE
+271,How do you monitor pharmacy performance and quality?,Network & Access,NA,2,RFP,Both,FALSE,TRUE,TRUE
+272,What is your process for adding or removing pharmacies from the network?,Network & Access,NA,2,RFP,Both,FALSE,TRUE,TRUE
+273,How do you negotiate pharmacy reimbursement rates?,Network & Access,NA,2,RFP,Both,FALSE,TRUE,TRUE
+274,How do you coordinate care between retail and mail-order pharmacies?,Network & Access,NA,2,RFP,Both,FALSE,TRUE,TRUE
+275,Do you offer 90-day retail pharmacy programs?,Network & Access,NA,2,RFI,Both,FALSE,TRUE,TRUE
+276,What is your approach to pharmacy network optimization?,Network & Access,NA,2,RFP,Both,FALSE,TRUE,TRUE
+277,How do you handle network disruptions or pharmacy closures?,Network & Access,NA,2,RFI,Both,FALSE,TRUE,TRUE
+278,What is your process for network adequacy monitoring and reporting?,Network & Access,NA,2,RFP,Both,FALSE,TRUE,TRUE
+279,How do you manage pharmacy DIR fees and their impact on clients?,Network & Access,NA,3,RFP,Both,FALSE,FALSE,TRUE
