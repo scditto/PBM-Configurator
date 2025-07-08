@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nautilus PBM Configurator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: #f8f9fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .main-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .left-panel {
+            width: 400px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-right: 2px solid #e9ecef;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .right-panel {
+            flex: 1;
+            background: white;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .logo-header {
+            padding: 20px;
+            text-align: center;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .nautilus-logo {
+            width: 50px;
+            height: 50px;
+            background: #6B6B6B;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 300;
+            color: #6B6B6B;
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: 16px;
+            color: #2E5A87;
+            font-weight: 700;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .control-section {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            background: white;
+            margin-bottom: 1px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+        
+        .section-title:hover {
+            background: #e9ecef;
+        }
+        
+        .section-icon {
+            color: #2E5A87;
+            font-size: 18px;
+        }
+        
+        .toggle-icon {
+            margin-left: auto;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .section-content {
+            padding-top: 15px;
+        }
+        
+        .section-content.hidden {
+            display: none;
+        }
+        
+        .upload-area {
+            border: 2px dashed #2E5A87;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area.uploaded {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .upload-area:hover {
+            border-color: #1a4971;
+            background: #e9ecef;
+        }
+        
+        .file-input {
+            margin: 15px 0;
+        }
+        
+        .file-input input[type="file"] {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            background: white;
+        }
+        
+        .template-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .template-option {
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .template-option:hover {
+            border-color: #2E5A87;
+            background: #f8f9fa;
+        }
+        
+        .template-option.selected {
+            border-color: #2E5A87;
+            background: #e8f4f8;
+        }
+        
+        .template-option input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .template-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .template-description {
+            font-size: 13px;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+        
+        .template-stats {
+            font-size: 12px;
+            color: #2E5A87;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .btn {
+            background: #2E5A87;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin: 4px;
+        }
+        
+        .btn:hover {
+            background: #1a4971;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(46, 90, 135, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6B6B6B;
+        }
+        
+        .btn-secondary:hover {
+            background: #555555;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-item:hover {
+            background: #f8f9fa;
+            border-color: #2E5A87;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.1);
+        }
+        
+        .checkbox-item label {
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .weight-section {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            margin-bottom: 15px;
+        }
+        
+        .weight-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .weight-label {
+            width: 140px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #495057;
+            flex-shrink: 0;
+        }
+        
+        .weight-slider {
+            width: 120px;
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+        
+        .weight-input {
+            width: 50px;
+            padding: 4px;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        
+        .weight-display {
+            min-width: 35px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            color: #2E5A87;
+        }
+        
+        .priority-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .priority-green { 
+            background: #28a745;
+        }
+        
+        .priority-yellow { 
+            background: #ffc107;
+        }
+        
+        .priority-red { 
+            background: #dc3545;
+        }
+        
+        .total-weight {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .total-valid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .total-invalid {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .topic-section {
+            margin-bottom: 15px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .topic-header {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
+            font-size: 14px;
+            color: #495057;
+        }
+        
+        .topic-levels {
+            padding: 12px 15px;
+        }
+        
+        .level-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .level-checkbox:last-child {
+            margin-bottom: 0;
+        }
+        
+        .level-checkbox input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .level-checkbox label {
+            font-size: 13px;
+            color: #495057;
+            cursor: pointer;
+        }
+        
+        .contract-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .contract-item:hover {
+            background: #e9ecef;
+            border-color: #2E5A87;
+        }
+        
+        .contract-item.selected {
+            background: #e8f4f8;
+            border-color: #2E5A87;
+        }
+        
+        .contract-checkbox {
+            margin-top: 2px;
+            transform: scale(1.1);
+        }
+        
+        .contract-content {
+            flex: 1;
+        }
+        
+        .contract-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .contract-description {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.3;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+        
+        .summary-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2E5A87;
+            margin-bottom: 5px;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .generate-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .question-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 0;
+        }
+        
+        .question-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .question-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .question-list-container {
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .question-category-header {
+            background: #2E5A87;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .question-item {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .question-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .question-checkbox {
+            margin-top: 3px;
+            transform: scale(1.2);
+        }
+        
+        .question-content {
+            flex: 1;
+        }
+        
+        .question-number {
+            font-weight: 700;
+            color: #2E5A87;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .question-text {
+            color: #495057;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .question-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .level-1 { background: #dc3545; color: white; }
+        .level-2 { background: #ffc107; color: #212529; }
+        .level-3 { background: #28a745; color: white; }
+        
+        .commercial { background: #2E5A87; color: white; }
+        .medicare { background: #e83e8c; color: white; }
+        .both { background: #6B6B6B; color: white; }
+        
+        .template-rfi { background: #17a2b8; color: white; }
+        .template-rfp { background: #6f42c1; color: white; }
+        .template-both { background: #28a745; color: white; }
+        
+        .compliance-essential { background: #dc3545; color: white; }
+        .compliance-plus { background: #17a2b8; color: white; }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .multiplier-section {
+            background: #e8f4f8;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .multiplier-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .multiplier-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .multiplier-label {
+            font-size: 12px;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .multiplier-input {
+            width: 50px;
+            padding: 2px 4px;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .control-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .category-count {
+            color: #6c757d;
+            font-weight: normal;
+        }
+        
+        /* Scrollbar styling */
+        .left-panel::-webkit-scrollbar,
+        .question-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .left-panel::-webkit-scrollbar-track,
+        .question-list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .left-panel::-webkit-scrollbar-thumb,
+        .question-list-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .left-panel::-webkit-scrollbar-thumb:hover,
+        .question-list-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Control Panel -->
+        <div class="left-panel">
+            <!-- Logo Header -->
+            <div class="logo-header">
+                <div class="logo-container">
+                    <div class="nautilus-logo">N</div>
+                    <div class="logo-text">Nautilus</div>
+                </div>
+                <div class="tagline">PBM RFI/RFP Configurator</div>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="control-section">
+                <div class="section-title" onclick="toggleSection('upload')">
+                    <span class="section-icon">📁</span>
+                    Question Database
+                    <span class="toggle-icon" id="upload-icon">−</span>
+                </div>
+                <div class="section-content" id="upload-content">
+                    <div class="upload-area" id="uploadArea">
+                        <div id="uploadPrompt">
+                            <div style="font-size: 14px; margin-bottom: 10px;">Upload CSV File</div>
+                            <div class="file-input">
+                                <input type="file" id="csvFile" accept=".csv" />
+                            </div>
+                        </div>
+                        <div id="uploadSuccess" class="hidden">
+                            <div style="color: #28a745; font-weight: 600; margin-bottom: 5px;">✅ Upload Complete</div>
+                            <div id="uploadDetails" style="font-size: 13px; color: #6c757d;"></div>
+                            <button class="btn btn-secondary btn-sm" onclick="resetUpload()" style="margin-top: 10px;">Change File</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Selection -->
+            <div class="control-section" id="templateSection" style="display: none;">
+                <div class="section-title" onclick="toggleSection('template')">
+                    <span class="section-icon">🎯</span>
+                    Template Selection
+                    <span class="toggle-icon" id="template-icon">−</span>
+                </div>
+                <div class="section-content" id="template-content">
+                    <div class="template-grid">
+                        <div class="template-option selected" onclick="selectTemplate('compliance-essentials')">
+                            <label>
+                                <input type="radio" name="template" value="compliance-essentials" checked>
+                                <div class="template-title">Compliance Essentials</div>
+                                <div class="template-description">Top 40 core fiduciary requirements and ERISA/CAA compliance questions</div>
+                                <div class="template-stats" id="essentials-stats">Loading...</div>
+                            </label>
+                        </div>
+                        <div class="template-option" onclick="selectTemplate('compliance-plus')">
+                            <label>
+                                <input type="radio" name="template" value="compliance-plus">
+                                <div class="template-title">Compliance Plus</div>
+                                <div class="template-description">Compliance essentials plus key strategic differentiating questions</div>
+                                <div class="template-stats" id="plus-stats">Loading...</div>
+                            </label>
+                        </div>
+                        <div class="template-option" onclick="selectTemplate('compliance-full')">
+                            <label>
+                                <input type="radio" name="template" value="compliance-full">
+                                <div class="template-title">Compliance Full</div>
+                                <div class="template-description">Comprehensive assessment with all relevant questions</div>
+                                <div class="template-stats" id="full-stats">Loading...</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan Type Selection -->
+            <div class="control-section" id="planSection" style="display: none;">
+                <div class="section-title" onclick="toggleSection('plan')">
+                    <span class="section-icon">🏥</span>
+                    Plan Types
+                    <span class="toggle-icon" id="plan-icon">−</span>
+                </div>
+                <div class="section-content" id="plan-content">
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="commercialPlans" checked onchange="updateQuestionSelection()">
+                            <label for="commercialPlans">Commercial Plans</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="medicarePlans" checked onchange="updateQuestionSelection()">
+                            <label for="medicarePlans">Medicare Plans</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topics & Levels -->
+            <div class="control-section" id="topicSection" style="display: none;">
+                <div class="section-title" onclick="toggleSection('topics')">
+                    <span class="section-icon">📚</span>
+                    Topics & Levels
+                    <span class="toggle-icon" id="topics-icon">−</span>
+                </div>
+                <div class="section-content" id="topics-content">
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary btn-sm" onclick="selectAllLevels()">All</button>
+                        <button class="btn btn-secondary btn-sm" onclick="clearAllLevels()">None</button>
+                        <button class="btn btn-secondary btn-sm" onclick="selectOnlyLevel1()">Level 1</button>
+                    </div>
+                    <div id="topicLevelSelection"></div>
+                </div>
+            </div>
+
+            <!-- Contract Terms -->
+            <div class="control-section" id="contractSection" style="display: none;">
+                <div class="section-title" onclick="toggleSection('contract')">
+                    <span class="section-icon">📋</span>
+                    Contract Terms
+                    <span class="toggle-icon" id="contract-icon">−</span>
+                </div>
+                <div class="section-content" id="contract-content">
+                    <div id="contractTermsList">
+                        <!-- Contract terms will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evaluation Weights -->
+            <div class="control-section" id="evaluationSection" style="display: none;">
+                <div class="section-title" onclick="toggleSection('evaluation')">
+                    <span class="section-icon">⚖️</span>
+                    Evaluation Weights
+                    <span class="toggle-icon" id="evaluation-icon">−</span>
+                </div>
+                <div class="section-content" id="evaluation-content">
+                    <div class="control-buttons">
+                        <button class="btn btn-secondary btn-sm" onclick="loadStandardWeights()">Standard</button>
+                        <button class="btn btn-secondary btn-sm" onclick="resetToEqualWeights()">Equal</button>
+                    </div>
+                    <div class="weight-section">
+                        <div id="categoryWeights"></div>
+                        <div class="total-weight" id="totalWeight">Total: 0%</div>
+                    </div>
+                    <div class="multiplier-section">
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #495057;">Level Multipliers</div>
+                        <div class="multiplier-item">
+                            <span class="multiplier-label">Level 1:</span>
+                            <input type="number" class="multiplier-input" id="level1Multiplier" value="3" min="1" max="5" step="0.1" onchange="updateMultipliers()">
+                        </div>
+                        <div class="multiplier-item">
+                            <span class="multiplier-label">Level 2:</span>
+                            <input type="number" class="multiplier-input" id="level2Multiplier" value="2" min="1" max="5" step="0.1" onchange="updateMultipliers()">
+                        </div>
+                        <div class="multiplier-item">
+                            <span class="multiplier-label">Level 3:</span>
+                            <input type="number" class="multiplier-input" id="level3Multiplier" value="1" min="1" max="5" step="0.1" onchange="updateMultipliers()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="control-section" id="summarySection" style="display: none;">
+                <div class="section-title" onclick="toggleSection('summary')">
+                    <span class="section-icon">📊</span>
+                    Selection Summary
+                    <span class="toggle-icon" id="summary-icon">−</span>
+                </div>
+                <div class="section-content" id="summary-content">
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <div class="summary-number" id="selectedQuestions">0</div>
+                            <div class="summary-label">Questions</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-number" id="selectedContracts">0</div>
+                            <div class="summary-label">Contract Terms</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-number" id="rfiQuestions">0</div>
+                            <div class="summary-label">RFI</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-number" id="level1Selected">0</div>
+                            <div class="summary-label">Level 1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Documents -->
+            <div class="control-section" id="generateSection" style="display: none;">
+                <div class="section-title" onclick="toggleSection('generate')">
+                    <span class="section-icon">📄</span>
+                    Generate Documents
+                    <span class="toggle-icon" id="generate-icon">−</span>
+                </div>
+                <div class="section-content" id="generate-content">
+                    <div class="generate-buttons">
+                        <button class="btn btn-success" onclick="generateRFI()">📋 Generate RFI</button>
+                        <button class="btn btn-success" onclick="generateRFP()">📋 Generate RFP</button>
+                        <button class="btn btn-success" onclick="generateExcelTemplate()">📊 Excel Template</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Question Panel -->
+        <div class="right-panel">
+            <div class="question-header">
+                <div class="question-title">Question Selection</div>
+                <div class="question-controls">
+                    <button class="btn btn-secondary btn-sm" onclick="selectAllQuestions()">✅ Select All</button>
+                    <button class="btn btn-secondary btn-sm" onclick="clearAllQuestions()">❌ Clear All</button>
+                </div>
+            </div>
+            <div class="question-list-container" id="questionListContainer">
+                <div id="questionList">
+                    <div style="padding: 40px; text-align: center; color: #6c757d;">
+                        Upload a CSV file to begin question selection
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        var questions = [];
+        var contracts = [];
+        var filteredQuestions = [];
+        var selectedQuestionIds = new Set();
+        var selectedContractIds = new Set();
+        var categoryWeights = {};
+        var questionMultipliers = { level1: 3, level2: 2, level3: 1 };
+        var currentTemplate = 'compliance-essentials';
+
+        // Updated template definitions for new CSV structure
+        var templates = {
+            'compliance-essentials': {
+                name: 'Compliance Essentials',
+                questionFilter: function(q) {
+                    return q.complianceEssentials === 'TRUE';
+                }
+            },
+            'compliance-plus': {
+                name: 'Compliance Plus',
+                questionFilter: function(q) {
+                    return q.compliancePlus === 'TRUE';
+                }
+            },
+            'compliance-full': {
+                name: 'Compliance Full',
+                questionFilter: function(q) {
+                    return q.complianceFull === 'TRUE';
+                }
+            }
+        };
+
+        // Sample contracts
+        var sampleContracts = [
+            { id: 'C001', title: 'Data Security & Privacy', description: 'Requirements for data encryption and privacy protection' },
+            { id: 'C002', title: 'Pricing Transparency', description: 'Full disclosure of rebates and administrative fees' },
+            { id: 'C003', title: 'Performance Guarantees', description: 'Service level agreements and penalties' },
+            { id: 'C004', title: 'Audit Rights', description: 'Plan sponsor rights to audit PBM records' }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Updated PBM Configurator starting...');
+            contracts = sampleContracts;
+            setupFileUpload();
+        });
+
+        function toggleSection(sectionId) {
+            var content = document.getElementById(sectionId + '-content');
+            var icon = document.getElementById(sectionId + '-icon');
+            
+            if (!content || !icon) {
+                console.log('Could not find elements for:', sectionId);
+                return;
+            }
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.textContent = '−';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '+';
+            }
+        }
+
+        function setupFileUpload() {
+            var fileInput = document.getElementById('csvFile');
+            if (!fileInput) return;
+
+            fileInput.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (!file) return;
+                
+                console.log('Processing file:', file.name);
+                
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        var csvData = e.target.result;
+                        var parsed = Papa.parse(csvData, {
+                            header: true,
+                            skipEmptyLines: true,
+                            transformHeader: function(header) {
+                                return header.trim();
+                            }
+                        });
+                        
+                        if (parsed.errors.length > 0) {
+                            throw new Error('CSV parsing error: ' + parsed.errors[0].message);
+                        }
+                        
+                        if (parsed.data.length === 0) {
+                            throw new Error('No data found in CSV file');
+                        }
+                        
+                        questions = parsed.data;
+                        
+                        console.log('✅ CSV loaded:', questions.length, 'questions');
+                        console.log('✅ Sample question:', questions[0]);
+                        handleSuccessfulUpload();
+                        
+                    } catch (error) {
+                        console.error('❌ Upload error:', error);
+                        alert('Error processing CSV file: ' + error.message);
+                    }
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+
+        function handleSuccessfulUpload() {
+            // Update upload area
+            document.getElementById('uploadArea').classList.add('uploaded');
+            document.getElementById('uploadPrompt').classList.add('hidden');
+            document.getElementById('uploadSuccess').classList.remove('hidden');
+            document.getElementById('uploadDetails').textContent = questions.length + ' questions loaded';
+            
+            // Show all sections
+            document.getElementById('templateSection').style.display = 'block';
+            document.getElementById('planSection').style.display = 'block';
+            document.getElementById('topicSection').style.display = 'block';
+            document.getElementById('contractSection').style.display = 'block';
+            document.getElementById('evaluationSection').style.display = 'block';
+            document.getElementById('summarySection').style.display = 'block';
+            document.getElementById('generateSection').style.display = 'block';
+            
+            // Initialize everything
+            initializeStandardWeights();
+            createTopicLevelInterface();
+            createCategoryWeights();
+            updateTemplateStats();
+            updateContractDisplay();
+            applyTemplate();
+            
+            console.log('✅ Interface setup complete');
+        }
+
+        function selectTemplate(templateId) {
+            currentTemplate = templateId;
+            
+            // Update UI
+            document.querySelectorAll('.template-option').forEach(function(option) {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Update radio button
+            document.querySelector('input[value="' + templateId + '"]').checked = true;
+            
+            // Apply template
+            applyTemplate();
+        }
+
+        function applyTemplate() {
+            if (questions.length === 0) return;
+            
+            var template = templates[currentTemplate];
+            if (!template) return;
+            
+            // Clear and reselect based on template
+            selectedQuestionIds.clear();
+            selectedContractIds.clear();
+            
+            // Apply question filter
+            for (var i = 0; i < questions.length; i++) {
+                if (template.questionFilter(questions[i])) {
+                    selectedQuestionIds.add(i);
+                }
+            }
+            
+            // Select some contracts for demo
+            for (var i = 0; i < Math.min(2, contracts.length); i++) {
+                selectedContractIds.add(i);
+            }
+            
+            updateQuestionSelection();
+            updateContractDisplay();
+            updateSummary();
+            
+            console.log('Template applied:', currentTemplate, selectedQuestionIds.size, 'questions selected');
+        }
+
+        function updateTemplateStats() {
+            Object.keys(templates).forEach(function(templateId) {
+                var template = templates[templateId];
+                var count = 0;
+                
+                for (var i = 0; i < questions.length; i++) {
+                    if (template.questionFilter(questions[i])) {
+                        count++;
+                    }
+                }
+                
+                var statsId = templateId.includes('essentials') ? 'essentials-stats' : 
+                             templateId.includes('plus') ? 'plus-stats' : 'full-stats';
+                var element = document.getElementById(statsId);
+                if (element) {
+                    element.textContent = count + ' questions';
+                }
+            });
+        }
+
+        function initializeStandardWeights() {
+            categoryWeights = {};
+            if (questions.length === 0) return;
+            
+            var topics = [];
+            var topicSet = new Set();
+            
+            for (var i = 0; i < questions.length; i++) {
+                var topic = questions[i].fiduciaryTopic;
+                if (topic && !topicSet.has(topic)) {
+                    topicSet.add(topic);
+                    topics.push(topic);
+                }
+            }
+            
+            topics.sort();
+            var weight = Math.floor(100 / topics.length);
+            
+            for (var i = 0; i < topics.length; i++) {
+                categoryWeights[topics[i]] = weight;
+            }
+            
+            // Adjust for rounding
+            var remainder = 100 - (weight * topics.length);
+            if (remainder > 0 && topics.length > 0) {
+                categoryWeights[topics[0]] += remainder;
+            }
+        }
+
+        function createTopicLevelInterface() {
+            var container = document.getElementById('topicLevelSelection');
+            if (!container || questions.length === 0) return;
+            
+            container.innerHTML = '';
+            
+            // Get unique topics
+            var topicQuestions = {};
+            questions.forEach(function(q) {
+                var topic = q.fiduciaryTopic || 'General';
+                if (!topicQuestions[topic]) {
+                    topicQuestions[topic] = [];
+                }
+                topicQuestions[topic].push(q);
+            });
+            
+            // Create topic sections
+            Object.keys(topicQuestions).sort().forEach(function(topic) {
+                var questions_in_topic = topicQuestions[topic];
+                
+                // Get unique levels for this topic
+                var levels = new Set();
+                questions_in_topic.forEach(function(q) {
+                    var level = parseInt(q.level) || 1;
+                    levels.add(level);
+                });
+                
+                var sortedLevels = Array.from(levels).sort();
+                
+                var topicDiv = document.createElement('div');
+                topicDiv.className = 'topic-section';
+                
+                var levelCheckboxes = '';
+                sortedLevels.forEach(function(level) {
+                    var levelCount = questions_in_topic.filter(function(q) {
+                        return (parseInt(q.level) || 1) === level;
+                    }).length;
+                    
+                    var checkboxId = 'level-' + encodeURIComponent(topic) + '-' + level;
+                    levelCheckboxes += 
+                        '<div class="level-checkbox">' +
+                        '<input type="checkbox" id="' + checkboxId + '" checked onchange="updateQuestionSelection()">' +
+                        '<label for="' + checkboxId + '">Level ' + level + ' (' + levelCount + ' questions)</label>' +
+                        '</div>';
+                });
+                
+                topicDiv.innerHTML = 
+                    '<div class="topic-header">' + topic + 
+                    ' <span class="category-count">(' + questions_in_topic.length + ' total)</span>' +
+                    '</div>' +
+                    '<div class="topic-levels">' + levelCheckboxes + '</div>';
+                
+                container.appendChild(topicDiv);
+            });
+        }
+
+        function createCategoryWeights() {
+            var container = document.getElementById('categoryWeights');
+            if (!container || questions.length === 0) return;
+            
+            container.innerHTML = '';
+            
+            var topics = Object.keys(categoryWeights);
+            
+            topics.forEach(function(topic) {
+                var weight = categoryWeights[topic] || 0;
+                
+                var div = document.createElement('div');
+                div.className = 'weight-item';
+                div.innerHTML = 
+                    '<span class="weight-label">' + topic + ':</span>' +
+                    '<input type="range" class="weight-slider" min="0" max="40" value="' + weight + '" ' +
+                    'onchange="updateCategoryWeight(\'' + topic.replace(/'/g, "\\'") + '\', this.value)">' +
+                    '<input type="number" class="weight-input" value="' + weight + '" min="0" max="40" ' +
+                    'onchange="updateCategoryWeight(\'' + topic.replace(/'/g, "\\'") + '\', this.value)">' +
+                    '<span class="weight-display">' + weight + '%</span>';
+                container.appendChild(div);
+            });
+            
+            updateTotalWeight();
+        }
+
+        function updateCategoryWeight(category, value) {
+            categoryWeights[category] = parseInt(value);
+            
+            var weightItem = event.target.closest('.weight-item');
+            var slider = weightItem.querySelector('.weight-slider');
+            var input = weightItem.querySelector('.weight-input');
+            var display = weightItem.querySelector('.weight-display');
+            
+            slider.value = value;
+            input.value = value;
+            display.textContent = value + '%';
+            
+            updateTotalWeight();
+        }
+
+        function updateTotalWeight() {
+            var total = 0;
+            for (var topic in categoryWeights) {
+                total += categoryWeights[topic];
+            }
+            var totalElement = document.getElementById('totalWeight');
+            if (totalElement) {
+                totalElement.textContent = 'Total: ' + total + '%';
+                totalElement.className = total === 100 ? 'total-weight total-valid' : 'total-weight total-invalid';
+            }
+        }
+
+        function updateContractDisplay() {
+            var container = document.getElementById('contractTermsList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            contracts.forEach(function(contract, index) {
+                var isSelected = selectedContractIds.has(index);
+                
+                var contractDiv = document.createElement('div');
+                contractDiv.className = 'contract-item' + (isSelected ? ' selected' : '');
+                contractDiv.innerHTML = 
+                    '<input type="checkbox" class="contract-checkbox" ' + (isSelected ? 'checked' : '') + 
+                    ' onchange="toggleContractSelection(' + index + ')">' +
+                    '<div class="contract-content">' +
+                    '<div class="contract-title">' + contract.title + '</div>' +
+                    '<div class="contract-description">' + contract.description + '</div>' +
+                    '</div>';
+                
+                container.appendChild(contractDiv);
+            });
+        }
+
+        function toggleContractSelection(index) {
+            if (selectedContractIds.has(index)) {
+                selectedContractIds.delete(index);
+            } else {
+                selectedContractIds.add(index);
+            }
+            updateContractDisplay();
+            updateSummary();
+        }
+
+        function updateQuestionSelection() {
+            if (questions.length === 0) return;
+            
+            var commercialPlans = document.getElementById('commercialPlans').checked;
+            var medicarePlans = document.getElementById('medicarePlans').checked;
+            
+            // Get selected topic/levels
+            var selectedTopicLevels = {};
+            document.querySelectorAll('[id^="level-"]').forEach(function(cb) {
+                if (cb.checked) {
+                    var parts = cb.id.replace('level-', '').split('-');
+                    var level = parseInt(parts.pop());
+                    var topic = decodeURIComponent(parts.join('-'));
+                    
+                    if (!selectedTopicLevels[topic]) {
+                        selectedTopicLevels[topic] = [];
+                    }
+                    selectedTopicLevels[topic].push(level);
+                }
+            });
+            
+            // Filter questions based on current template and selections
+            filteredQuestions = [];
+            for (var i = 0; i < questions.length; i++) {
+                var q = questions[i];
+                var topic = q.fiduciaryTopic || 'General';
+                var level = parseInt(q.level) || 1;
+                var planType = q.planType || 'Both';
+                
+                // Check if question matches current template
+                var template = templates[currentTemplate];
+                if (!template || !template.questionFilter(q)) {
+                    continue;
+                }
+                
+                // Check topic/level match
+                var topicLevelMatch = selectedTopicLevels[topic] && 
+                    selectedTopicLevels[topic].includes(level);
+                
+                // Check plan type match
+                var planMatch = true;
+                if (!commercialPlans && !medicarePlans) {
+                    planMatch = false;
+                } else if (commercialPlans && !medicarePlans) {
+                    planMatch = planType === 'Commercial' || planType === 'Both';
+                } else if (!commercialPlans && medicarePlans) {
+                    planMatch = planType === 'Medicare' || planType === 'Both';
+                }
+                
+                if (topicLevelMatch && planMatch) {
+                    filteredQuestions.push(q);
+                }
+            }
+            
+            // Update selected questions to match filtered questions
+            selectedQuestionIds.clear();
+            for (var i = 0; i < filteredQuestions.length; i++) {
+                // Find original index in questions array
+                var originalIndex = questions.indexOf(filteredQuestions[i]);
+                if (originalIndex >= 0) {
+                    selectedQuestionIds.add(originalIndex);
+                }
+            }
+            
+            displayQuestionList();
+            updateSummary();
+        }
+
+        function displayQuestionList() {
+            var container = document.getElementById('questionList');
+            if (!container) return;
+            
+            if (filteredQuestions.length === 0) {
+                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #6c757d;">No questions match your current selection</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            // Group by category
+            var questionsByCategory = {};
+            filteredQuestions.forEach(function(q) {
+                var category = q.fiduciaryTopic || 'General';
+                if (!questionsByCategory[category]) {
+                    questionsByCategory[category] = [];
+                }
+                questionsByCategory[category].push(q);
+            });
+            
+            // Display by category
+            Object.keys(questionsByCategory).sort().forEach(function(category) {
+                // Category header
+                var categoryHeader = document.createElement('div');
+                categoryHeader.className = 'question-category-header';
+                categoryHeader.textContent = category + ' (' + questionsByCategory[category].length + ' questions)';
+                container.appendChild(categoryHeader);
+                
+                // Questions in category
+                questionsByCategory[category].forEach(function(q, i) {
+                    var originalIndex = questions.indexOf(q);
+                    var questionNumber = (q.abbreviation || 'XX') + '-' + String(q.number || i + 1).padStart(3, '0');
+                    var level = parseInt(q.level) || 1;
+                    var questionText = q.question || 'No question text';
+                    
+                    var questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-item';
+                    
+                    var isSelected = selectedQuestionIds.has(originalIndex);
+                    
+                    var badges = '<span class="badge level-' + level + '">L' + level + '</span>';
+                    if (q.complianceEssentials === 'TRUE') {
+                        badges += '<span class="badge compliance-essential">Essential</span>';
+                    }
+                    if (q.compliancePlus === 'TRUE') {
+                        badges += '<span class="badge compliance-plus">Plus</span>';
+                    }
+                    
+                    questionDiv.innerHTML = 
+                        '<input type="checkbox" class="question-checkbox" ' + (isSelected ? 'checked' : '') + 
+                        ' onchange="toggleQuestionSelection(' + originalIndex + ')">' +
+                        '<div class="question-content">' +
+                        '<div class="question-number">' + questionNumber + '</div>' +
+                        '<div class="question-text">' + questionText + '</div>' +
+                        '<div class="question-badges">' + badges + '</div>' +
+                        '</div>';
+                    
+                    container.appendChild(questionDiv);
+                });
+            });
+        }
+
+        function toggleQuestionSelection(questionIndex) {
+            if (selectedQuestionIds.has(questionIndex)) {
+                selectedQuestionIds.delete(questionIndex);
+            } else {
+                selectedQuestionIds.add(questionIndex);
+            }
+            updateSummary();
+        }
+
+        function updateSummary() {
+            var selectedQuestionCount = selectedQuestionIds.size;
+            var selectedContractCount = selectedContractIds.size;
+            var rfiCount = 0, level1Count = 0;
+            
+            if (questions.length > 0) {
+                selectedQuestionIds.forEach(function(index) {
+                    if (index < questions.length) {
+                        var q = questions[index];
+                        var phase = q.phase || 'Both';
+                        var level = parseInt(q.level) || 1;
+                        
+                        if (phase === 'RFI' || phase === 'Both') rfiCount++;
+                        if (level === 1) level1Count++;
+                    }
+                });
+            }
+            
+            document.getElementById('selectedQuestions').textContent = selectedQuestionCount;
+            document.getElementById('selectedContracts').textContent = selectedContractCount;
+            document.getElementById('rfiQuestions').textContent = rfiCount;
+            document.getElementById('level1Selected').textContent = level1Count;
+        }
+
+        // Utility functions
+        function selectAllLevels() {
+            document.querySelectorAll('[id^="level-"]').forEach(function(cb) {
+                cb.checked = true;
+            });
+            updateQuestionSelection();
+        }
+        
+        function clearAllLevels() {
+            document.querySelectorAll('[id^="level-"]').forEach(function(cb) {
+                cb.checked = false;
+            });
+            updateQuestionSelection();
+        }
+        
+        function selectOnlyLevel1() {
+            document.querySelectorAll('[id^="level-"]').forEach(function(cb) {
+                cb.checked = cb.id.includes('-1');
+            });
+            updateQuestionSelection();
+        }
+        
+        function loadStandardWeights() {
+            initializeStandardWeights();
+            createCategoryWeights();
+        }
+        
+        function resetToEqualWeights() {
+            if (questions.length === 0) return;
+            
+            var topics = Object.keys(categoryWeights);
+            var equalWeight = Math.floor(100 / topics.length);
+            
+            topics.forEach(function(topic) {
+                categoryWeights[topic] = equalWeight;
+            });
+            
+            var remainder = 100 - (equalWeight * topics.length);
+            if (remainder > 0 && topics.length > 0) {
+                categoryWeights[topics[0]] += remainder;
+            }
+            
+            createCategoryWeights();
+        }
+        
+        function updateMultipliers() {
+            questionMultipliers.level1 = parseFloat(document.getElementById('level1Multiplier').value);
+            questionMultipliers.level2 = parseFloat(document.getElementById('level2Multiplier').value);
+            questionMultipliers.level3 = parseFloat(document.getElementById('level3Multiplier').value);
+        }
+        
+        function selectAllQuestions() {
+            for (var i = 0; i < questions.length; i++) {
+                selectedQuestionIds.add(i);
+            }
+            displayQuestionList();
+            updateSummary();
+        }
+        
+        function clearAllQuestions() {
+            selectedQuestionIds.clear();
+            displayQuestionList();
+            updateSummary();
+        }
+        
+        function resetUpload() {
+            location.reload();
+        }
+        
+        function generateRFI() {
+            var content = generateDocument('RFI');
+            if (content) downloadDocument(content, 'PBM_RFI_Questionnaire.html');
+        }
+        
+        function generateRFP() {
+            var content = generateDocument('RFP');
+            if (content) downloadDocument(content, 'PBM_RFP_Questionnaire.html');
+        }
+        
+        function generateDocument(type) {
+            var selectedQuestions = [];
+            selectedQuestionIds.forEach(function(index) {
+                if (index < questions.length) {
+                    selectedQuestions.push(questions[index]);
+                }
+            });
+
+            if (selectedQuestions.length === 0) {
+                alert('Please select at least one question before generating documents.');
+                return '';
+            }
+
+            var html = '<!DOCTYPE html><html><head><title>Nautilus PBM ' + type + ' Questionnaire</title>';
+            html += '<style>body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; color: #2c3e50; }';
+            html += '.header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #2E5A87; padding-bottom: 20px; }';
+            html += '.logo { color: #6B6B6B; font-size: 32px; font-weight: 300; margin-bottom: 10px; }';
+            html += '.section { margin-bottom: 30px; }';
+            html += '.question { margin-bottom: 20px; padding: 15px; border-left: 4px solid #2E5A87; background: #f8f9fa; }';
+            html += '.question-number { font-weight: bold; color: #2E5A87; font-size: 16px; }';
+            html += '.response-area { border: 1px solid #dee2e6; min-height: 100px; margin-top: 15px; padding: 15px; background: white; }';
+            html += '</style></head><body>';
+
+            html += '<div class="header">';
+            html += '<div class="logo">Nautilus</div>';
+            html += '<h1>PBM ' + type + ' Questionnaire</h1>';
+            html += '<p><strong>Template:</strong> ' + templates[currentTemplate].name + '</p>';
+            html += '<p><strong>Selected Questions:</strong> ' + selectedQuestions.length + ' questions</p>';
+            html += '</div>';
+
+            // Group by category and generate sections
+            var questionsByCategory = {};
+            selectedQuestions.forEach(function(q) {
+                var category = q.fiduciaryTopic || 'General';
+                if (!questionsByCategory[category]) {
+                    questionsByCategory[category] = [];
+                }
+                questionsByCategory[category].push(q);
+            });
+
+            Object.keys(questionsByCategory).sort().forEach(function(category) {
+                var categoryWeight = categoryWeights[category] || 0;
+                html += '<div class="section">';
+                html += '<h2>' + category.toUpperCase() + '</h2>';
+                html += '<p><strong>Category Weight:</strong> ' + categoryWeight + '%</p>';
+
+                questionsByCategory[category].forEach(function(question, j) {
+                    var questionNumber = (question.abbreviation || 'XX') + '-' + String(question.number || j + 1).padStart(3, '0');
+                    var questionText = question.question || 'Question text not found';
+                    
+                    html += '<div class="question">';
+                    html += '<div class="question-number">' + questionNumber + '</div>';
+                    html += '<div>' + questionText + '</div>';
+                    html += '<div class="response-area">';
+                    html += '<strong>Vendor Response:</strong><br>';
+                    html += '[Reference: ' + questionNumber + ']';
+                    html += '</div>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            });
+
+            html += '</body></html>';
+            return html;
+        }
+
+        function generateExcelTemplate() {
+            var selectedQuestions = [];
+            selectedQuestionIds.forEach(function(index) {
+                if (index < questions.length) {
+                    selectedQuestions.push(questions[index]);
+                }
+            });
+
+            if (selectedQuestions.length === 0) {
+                alert('Please select at least one question before generating Excel template.');
+                return;
+            }
+
+            // Create workbook
+            var wb = XLSX.utils.book_new();
+
+            // Group questions by topic
+            var questionsByTopic = {};
+            selectedQuestions.forEach(function(q) {
+                var topic = q.fiduciaryTopic || 'General';
+                var abbrev = q.abbreviation || 'GN';
+                if (!questionsByTopic[abbrev]) {
+                    questionsByTopic[abbrev] = {
+                        name: topic,
+                        questions: []
+                    };
+                }
+                questionsByTopic[abbrev].questions.push(q);
+            });
+
+            // Create worksheet for each topic
+            Object.keys(questionsByTopic).forEach(function(abbrev) {
+                var topicData = questionsByTopic[abbrev];
+                var wsData = [
+                    ['Question ID', 'Question', 'Level', 'Phase', 'Plan Type', 'Vendor Response']
+                ];
+
+                topicData.questions.forEach(function(q) {
+                    var questionId = (q.abbreviation || abbrev) + '-' + String(q.number || '000').padStart(3, '0');
+                    wsData.push([
+                        questionId,
+                        q.question || 'No question text',
+                        q.level || '1',
+                        q.phase || 'RFI',
+                        q.planType || 'Both',
+                        '' // Empty response column
+                    ]);
+                });
+
+                var ws = XLSX.utils.aoa_to_sheet(wsData);
+                
+                // Set column widths
+                ws['!cols'] = [
+                    { wch: 12 }, // Question ID
+                    { wch: 60 }, // Question
+                    { wch: 8 },  // Level
+                    { wch: 8 },  // Phase
+                    { wch: 12 }, // Plan Type
+                    { wch: 40 }  // Vendor Response
+                ];
+
+                XLSX.utils.book_append_sheet(wb, ws, abbrev);
+            });
+
+            // Save the file
+            XLSX.writeFile(wb, 'PBM_Questionnaire_Template.xlsx');
+        }
+        
+        function downloadDocument(content, filename) {
+            var blob = new Blob([content], { type: 'text/html' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        console.log('✅ Updated PBM Configurator loaded and ready for new CSV structure');
+    </script>
+</body>
+</html>
